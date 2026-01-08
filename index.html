@@ -85,7 +85,43 @@
             border-radius: 10px;
             background: #000;
         }
+/* ========================================= */
+        /* AJUSTES PARA CELULAR (MOBILE)        */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            
+            /* 1. O Texto do Nome diminui */
+            h1 {
+                font-size: 3rem; /* Era 5rem, agora é menor */
+                letter-spacing: 2px;
+            }
 
+            p {
+                font-size: 1rem;
+            }
+
+            /* 2. A Imagem da Capa aumenta (pra ocupar a largura do celular) */
+            .minha-imagem {
+                width: 80%; /* Era 40%, agora ocupa quase a tela toda */
+            }
+
+            /* 3. Ajuste fino na Galeria */
+            .projeto-card {
+                font-size: 1.5rem; /* Texto dos projetos menor */
+                padding: 10px;
+                text-align: center;
+            }
+            
+            .img-projeto {
+                width: 90%; /* Vídeo ocupa mais espaço na horizontal */
+                height: 40vh; /* Altura ajustada pra caber */
+            }
+            
+            /* 4. Esconde o "mouse" se tiver algum ícone de scroll e ajusta margens */
+            .galeria-section {
+                align-items: center; /* Garante que fique no meio */
+            }
+        }
     </style>
 </head>
 <body>
@@ -214,4 +250,5 @@
         });
     </script>
 </body>
+
 </html>
