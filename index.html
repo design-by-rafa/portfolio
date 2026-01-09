@@ -1,450 +1,922 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     
+
     <title>Portfólio | Editor & Designer</title>
+
     <meta name="description" content="Portfólio de Edição de Vídeo e Color Grading.">
+
     <meta name="theme-color" content="#050505">
+
     
+
     <style>
+
     
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         
+
         body { 
+
             background-color: #050505; 
+
             color: white; 
+
             font-family: 'Arial', sans-serif;
+
             overflow-x: hidden; 
+
             -webkit-overflow-scrolling: touch; 
+
         }
+
+
 
         body::before {
+
             content: " "; display: block; position: fixed;
+
             top: 0; left: 0; bottom: 0; right: 0;
+
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+
             z-index: 999;
+
             background-size: 100% 2px, 3px 100%;
+
             pointer-events: none; 
+
         }
+
+
 
         .hero-section {
+
             height: 100vh; height: 100svh;
+
             width: 100%;
+
             display: flex; align-items: center; justify-content: center;
+
             position: relative; overflow: hidden;
+
         }
 
+
+
         .minha-imagem {
+
             width: 40%; height: auto;
+
             border-radius: 15px;
+
             box-shadow: 0 0 60px rgba(255,255,255,0.05);
+
             z-index: 1; object-fit: cover;
+
             filter: brightness(0.6);
+
             will-change: transform;
+
         }
+
+
 
         .texto-overlay { position: absolute; z-index: 2; text-align: center; pointer-events: none; width: 90%; }
 
+
+
         h1 { 
+
             font-size: 5rem; margin: 0; 
+
             text-transform: uppercase; letter-spacing: 5px; 
+
             text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
             line-height: 1.1;
+
         }
+
         p { font-size: 1.5rem; font-weight: lighter; margin-top: 15px; opacity: 0.9; }
 
+
+
         .scroll-indicator {
+
             position: absolute; bottom: 30px; left: 50%;
+
             transform: translateX(-50%); z-index: 5; text-align: center; opacity: 0.7;
+
             animation: flutuar 2s infinite;
+
         }
+
         .scroll-indicator span { font-size: 0.8rem; letter-spacing: 2px; display: block; margin-bottom: 5px; }
+
         .scroll-indicator .arrow { font-size: 1.5rem; }
+
         @keyframes flutuar {
+
             0%, 100% { transform: translate(-50%, 0); }
+
             50% { transform: translate(-50%, 10px); }
+
         }
+
+
 
         .galeria-section {
+
             width: 300%; 
+
             height: 100vh; height: 100svh;
+
             display: flex; flex-wrap: nowrap;
+
             background-color: #050505;
+
         }
+
+
 
         .projeto-card {
+
             width: 100vw; height: 100vh; height: 100svh;
+
             display: flex; align-items: center; justify-content: center;
+
             flex-direction: column;
+
             border-right: 1px solid #111;
+
         }
+
+
 
         .img-projeto {
+
             width: 60%; height: 60vh;
+
             object-fit: cover; border-radius: 10px;
+
             background: #111; margin-bottom: 20px;
+
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+
         }
+
+
 
         .info-projeto h3 { font-size: 2rem; margin-bottom: 5px; color: #fff; }
+
         .info-projeto span { color: #888; font-size: 1.2rem; }
 
+
+
         .servicos-section {
+
             background-color: #050505; padding: 100px 10%;
+
             display: flex; flex-direction: column; justify-content: center;
+
             min-height: 80vh; position: relative; z-index: 10;
+
         }
+
+
 
         .servico-item {
+
             border-top: 1px solid #333; padding: 40px 0;
+
             display: flex; align-items: baseline;
+
             transition: all 0.3s ease;
+
             cursor: default;
+
         }
+
         .servico-item:last-child { border-bottom: 1px solid #333; }
 
+
+
         .servico-item:hover {
+
             background-color: #111;
+
             padding-left: 30px;
+
             border-top: 1px solid #fff; 
+
             border-bottom: 1px solid #fff; 
+
         }
+
+
 
         .servico-item:hover .servico-nome {
+
             text-shadow: 0 0 15px rgba(255,255,255,0.3); 
+
         }
+
+
 
         .num { font-size: 1.2rem; color: #888; margin-right: 30px; font-family: monospace; }
+
         .servico-nome { font-size: 3rem; flex-grow: 1; text-transform: uppercase; margin: 0; color: #fff; transition: 0.3s; }
+
         .servico-desc { font-size: 1.2rem; color: #ccc; margin: 0; text-align: right; }
 
+
+
         .software-marquee {
+
             background: #111; padding: 25px 0;
+
             overflow: hidden; white-space: nowrap;
+
             position: relative; z-index: 10;
+
             border-top: 1px solid #333; border-bottom: 1px solid #333;
+
             transition: 0.3s;
+
         }
+
         
+
         .track { display: inline-flex; align-items: center; animation: letreiro 20s linear infinite; }
+
         
+
         .track span { font-size: 1.5rem; font-weight: bold; color: #666; margin-left: 40px; letter-spacing: 2px; transition: 0.3s; }
+
         
+
         .icon-soft { 
+
             width: 30px; height: 30px; margin-left: 15px; 
+
             filter: grayscale(100%); opacity: 0.5; 
+
             transition: all 0.4s ease; 
+
         }
+
         
+
         .software-marquee:hover {
+
             background: #1a1a1a; 
+
         }
+
         
+
         .software-marquee:hover .icon-soft {
+
             filter: grayscale(0%); 
+
             opacity: 1;           
+
             transform: scale(1.2); 
+
         }
+
         
+
         .software-marquee:hover span {
+
             color: #fff; 
+
         }
+
+
 
         @keyframes letreiro { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
+
+
 /* ========================================= */
+
         /* 6. COLOR GRADING (CORRIGIDO)             */
+
         /* ========================================= */
+
         .comparison-section {
+
             height: 100vh; height: 100svh; width: 100%;
+
             background: #080808;
+
             display: flex; flex-direction: column;
+
             align-items: center; justify-content: center;
+
             
+
             /* AQUI ESTÁ A MÁGICA: */
+
             position: relative; 
+
             z-index: 1000; /* Maior que o 999 da textura, então fica por cima */
+
         }        }
 
+
+
         .comparison-title { margin-bottom: 20px; text-align: center; z-index: 5; width: 90%; }
+
         .comparison-title h2 { font-size: 2.5rem; margin-bottom: 5px; }
 
+
+
         .video-container {
+
             position: relative;
+
             width: 70%; height: 65vh; 
+
             border-radius: 15px; overflow: hidden;
+
             box-shadow: 0 0 50px rgba(255,255,255,0.05);
+
             -webkit-user-select: none; user-select: none;
+
         }
+
+
 
         .video-compare { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+
         .video-after { z-index: 2; width: 100%; clip-path: inset(0 50% 0 0); }
 
+
+
         .slider-control {
+
             position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+
             width: 100%; height: 100%; z-index: 20; margin: 0;
+
             opacity: 0; cursor: col-resize;
+
             touch-action: pan-y; 
+
         }
+
+
 
         .divisor-line {
+
             position: absolute; top: 0; bottom: 0; left: 50%;
+
             width: 2px; background: white; z-index: 9; pointer-events: none;
+
             box-shadow: 0 0 10px rgba(0,0,0,0.8);
+
         }
+
         .divisor-button {
+
             position: absolute; top: 50%; left: 50%;
+
             transform: translate(-50%, -50%);
+
             width: 40px; height: 40px; background: white; border-radius: 50%;
+
             z-index: 9; pointer-events: none; display: flex;
+
             align-items: center; justify-content: center; color: black; font-weight: bold;
+
         }
+
+
 
         .label-video {
+
             position: absolute; top: 20px; padding: 5px 10px;
+
             background: rgba(0,0,0,0.7); border-radius: 5px;
+
             font-size: 12px; font-weight: bold; z-index: 8; pointer-events: none;
+
         }
+
         .label-raw { right: 20px; }
+
         .label-grade { left: 20px; }
 
+
+
         .disclaimer-text {
+
             margin-top: 20px; font-size: 0.9rem; color: #666; font-style: italic;
+
             text-align: center; max-width: 80%; line-height: 1.4; opacity: 0.8;
+
         }
+
+
 
         .contato-section {
+
             height: 60vh; background-color: #050505;
+
             display: flex; align-items: center; justify-content: center;
+
             flex-direction: column; text-align: center;
+
             border-top: 1px solid #222; position: relative; z-index: 10;
+
         }
+
         .btn-contato {
+
             margin-top: 30px; padding: 15px 50px;
+
             background: white; color: black;
+
             text-decoration: none; font-weight: bold;
+
             border-radius: 50px; font-size: 1.2rem;
+
             transition: 0.3s;
+
         }
+
         .btn-contato:active { transform: scale(0.95); }
+
         .btn-contato:hover { transform: scale(1.1); background: #ddd; }
 
+
+
         @media (max-width: 768px) {
+
             
+
             h1 { font-size: 2.8rem; letter-spacing: 2px; word-wrap: break-word; }
+
             p { font-size: 1rem; padding: 0 20px; }
+
             .minha-imagem { width: 85%; height: 50vh; border-radius: 10px; }
+
             
+
             .img-projeto { width: 90%; height: 35vh; margin-top: 0; margin-bottom: 20px;}
+
             .info-projeto h3 { font-size: 1.5rem; }
+
             
+
             .servicos-section { padding: 60px 5%; }
+
             .servico-item { flex-direction: column; padding: 25px 0; }
+
             .servico-nome { font-size: 2rem; margin-bottom: 5px; }
+
             .servico-item:hover { padding-left: 0; background: transparent; border-top: 1px solid #333; }
+
             .servico-desc { text-align: left; font-size: 1rem; color: #888; margin-top: 5px;}
+
             .num { display: none; }
 
+
+
             .track span { font-size: 1rem; margin-left: 20px; }
+
             .icon-soft { width: 20px; height: 20px; margin-left: 10px; }
 
+
+
             .video-container { width: 90%; height: 45vh; }
+
             .comparison-title h2 { font-size: 1.8rem; }
+
             .disclaimer-text { font-size: 0.75rem; margin-top: 15px; }
+
             
+
             .divisor-button { width: 50px; height: 50px; font-size: 1.2rem; }
+
         }
+
     </style>
+
 </head>
+
 <body>
 
+
+
     <div class="hero-section">
+
         <div class="texto-overlay">
+
             <h1>RAFAEL SOARES</h1>
+
             <p>EDITOR & COLORISTA</p>
+
         </div>
+
         <video class="minha-imagem" autoplay loop muted playsinline>
+
             <source src="showreel-capa.mp4" type="video/mp4">
+
         </video>
+
         <div class="scroll-indicator">
+
             <span>ROLE PARA BAIXO</span>
+
             <div class="arrow">↓</div>
+
         </div>
+
     </div>
+
+
 
     <div class="galeria-section">
+
         <div class="projeto-card">
+
             <video class="img-projeto" autoplay loop muted playsinline>
+
                 <source src="video1.mp4" type="video/mp4">
+
             </video>
+
             <div class="info-projeto">
+
                 <h3>Comercial X</h3>
+
                 <span>Edição Dinâmica</span>
+
             </div>
+
         </div>
+
         <div class="projeto-card">
+
             <video class="img-projeto" autoplay loop muted playsinline>
+
                 <source src="video2.mp4" type="video/mp4">
+
             </video>
+
             <div class="info-projeto">
+
                 <h3>Clipe Musical Y</h3>
+
                 <span>VFX & Flow</span>
+
             </div>
+
         </div>
+
         <div class="projeto-card">
+
             <img src="projeto3.jpg" class="img-projeto" style="object-fit: contain;">
+
             <div class="info-projeto">
+
                 <h3>Identidade Visual</h3>
+
                 <span>Design & Branding</span>
+
             </div>
+
         </div>
+
     </div>
+
+
 
     <div class="servicos-section">
+
         <div class="servico-item">
+
             <span class="num">01</span>
+
             <h3 class="servico-nome">EDIÇÃO DE VÍDEO</h3>
+
             <p class="servico-desc">Publicidade, YouTube & Reels</p>
+
         </div>
+
         <div class="servico-item">
+
             <span class="num">02</span>
+
             <h3 class="servico-nome">COLOR GRADING</h3>
+
             <p class="servico-desc">Correção de Cor & Looks</p>
+
         </div>
+
         <div class="servico-item">
+
             <span class="num">03</span>
+
             <h3 class="servico-nome">MOTION GRAPHICS</h3>
+
             <p class="servico-desc">Animações 2D & VFX</p>
+
         </div>
+
         <div class="servico-item">
+
             <span class="num">04</span>
+
             <h3 class="servico-nome">DESIGN GRÁFICO</h3>
+
             <p class="servico-desc">Thumbnails & Identidade</p>
+
         </div>
+
     </div>
+
+
 
     <div class="software-marquee">
+
         <div class="track">
+
             <span>ADOBE PREMIERE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" class="icon-soft">
+
             <span>AFTER EFFECTS</span> <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" class="icon-soft">
+
             <span>DAVINCI RESOLVE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png" class="icon-soft">
+
             <span>PHOTOSHOP</span> <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" class="icon-soft">
+
             <span>ILLUSTRATOR</span> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" class="icon-soft">
+
             
+
             <span>ADOBE PREMIERE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" class="icon-soft">
+
             <span>AFTER EFFECTS</span> <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" class="icon-soft">
+
             <span>DAVINCI RESOLVE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png" class="icon-soft">
+
             <span>PHOTOSHOP</span> <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" class="icon-soft">
+
             <span>ILLUSTRATOR</span> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" class="icon-soft">
+
         </div>
+
     </div>
+
+
 
     <div class="comparison-section">
+
         <div class="comparison-title">
+
             <h2>COLOR GRADING</h2>
+
             <p>Arraste para ver a diferença</p>
+
         </div>
+
+
 
         <div class="video-container">
+
             <video class="video-compare video-raw" autoplay loop muted playsinline>
+
                 <source src="video-raw.mp4" type="video/mp4">
+
             </video>
+
             <video class="video-compare video-after" autoplay loop muted playsinline>
+
                 <source src="video-grade.mp4" type="video/mp4">
+
             </video>
+
             
+
             <div class="label-video label-grade">GRADED</div>
+
             <div class="label-video label-raw">RAW</div>
+
             
+
             <div class="divisor-line"></div>
+
             <div class="divisor-button">↔</div>
 
+
+
             <input type="range" min="0" max="100" value="50" class="slider-control" oninput="atualizarComparacao(this.value)">
+
         </div>
 
+
+
         <p class="disclaimer-text">
+
             *Material bruto original fornecido no YouTube por <strong>Aziz Ben Amara</strong>.<br>
+
             Este vídeo não foi gravado por mim, eu apenas fiz a correção de cor.
+
         </p>
 
+
+
     </div>
+
+
 
     <div class="contato-section">
+
         <h2 style="font-size: 3rem; margin-bottom: 20px;">VAMOS CONVERSAR!</h2>
+
         <p style="color: gray; margin-bottom: 30px;">Pronto para elevar o nível do seu projeto?</p>
-        <a href="mailto:rafael.sstx@gmail.com" class="btn-contato">Enviar E-mail</a>
-        <br>
-        <p style="margin-top: 50px; font-size: 0.8rem; opacity: 0.5;">© 2026 Rafael Soares</p>
+
+        
+
+        <a href="mailto:seuemail@exemplo.com" class="btn-contato">Enviar E-mail</a>
+
+
+
+        <div style="margin-top: 40px; display: flex; gap: 20px;">
+
+            <a href="https://www.linkedin.com/in/rafael-soares-01969a230?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
+
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="30" style="filter: invert(1); opacity: 0.6; transition: 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+
+            </a>
+
+            <a href="https://instagram.com/ownedbyrafa" target="_blank">
+
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="30" style="filter: invert(1); opacity: 0.6; transition: 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+
+            </a>
+
+        </div>
+
+        
+
+        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2024 Seu Nome</p>
+
     </div>
 
+
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
+
+
     <script>
+
         gsap.registerPlugin(ScrollTrigger);
+
+
 
         let isMobile = window.innerWidth < 768;
 
+
+
         // 1. HERO
+
         let tlHero = gsap.timeline({
+
             scrollTrigger: {
+
                 trigger: ".hero-section", 
+
                 start: "top top", 
+
                 end: isMobile ? "+=800" : "+=1500", 
+
                 scrub: 1, 
+
                 pin: true
+
             }
+
         });
+
         tlHero.to(".minha-imagem", { scale: 10, ease: "none" }, 0); 
+
         tlHero.to(".texto-overlay", { opacity: 0, scale: 1.5 }, 0); 
+
         tlHero.to(".scroll-indicator", { opacity: 0 }, 0); 
 
+
+
         // 2. GALERIA
+
         let secoes = gsap.utils.toArray(".projeto-card");
+
         gsap.to(secoes, {
+
             xPercent: -100 * (secoes.length - 1),
+
             ease: "none",
+
             scrollTrigger: {
+
                 trigger: ".galeria-section", 
+
                 pin: true, 
+
                 scrub: 2, 
+
                 start: "top top", 
+
                 end: isMobile ? "+=1500" : "+=3000", 
+
                 snap: { snapTo: 1 / (secoes.length - 1), duration: 0.5, delay: 0.1, ease: "power1.out" }
+
             }
+
         });
 
+
+
         // 3. SLIDER
+
         function atualizarComparacao(valor) {
+
             const linha = document.querySelector('.divisor-line');
+
             const botao = document.querySelector('.divisor-button');
+
             const videoAfter = document.querySelector('.video-after');
+
             linha.style.left = valor + "%";
+
             botao.style.left = valor + "%";
+
             videoAfter.style.clipPath = `inset(0 ${100 - valor}% 0 0)`;
+
         }
 
+
+
 // 4. SINCRONIA AVANÇADA DE VÍDEOS (GARANTE O LOOP PERFEITO)
+
         const v1 = document.querySelector('.video-raw');
+
         const v2 = document.querySelector('.video-after');
+
         
+
         if(v1 && v2) { 
+
             // Se der play/pause em um, o outro obedece
+
             v1.onplay = () => v2.play();
+
             v1.onpause = () => v2.pause();
+
             
+
             // O Segredo do Loop: Monitora o tempo o tempo todo
+
             v1.addEventListener('timeupdate', () => {
+
                 // Se a diferença for maior que 0.1s (desincronizou), força o vídeo 2 a pular para o tempo do vídeo 1
+
                 if (!v1.seeking && Math.abs(v1.currentTime - v2.currentTime) > 0.1) {
+
                     v2.currentTime = v1.currentTime;
+
                 }
+
             });
+
             
+
         }
+
     </script>
+
 </body>
+
 </html>
+
