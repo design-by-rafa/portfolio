@@ -359,7 +359,7 @@
         </div>
 
         <p class="disclaimer-text">
-            *Material bruto original fornecido no YouTube por <strong>Aziz Ben Amara </strong>.<br>
+            *Material bruto original fornecido no YouTube por <strong>Aziz Ben Amara</strong>.<br>
             Este vídeo não foi gravado por mim, eu apenas fiz a correção de cor.
         </p>
 
@@ -420,14 +420,22 @@
             videoAfter.style.clipPath = `inset(0 ${100 - valor}% 0 0)`;
         }
 
-        // 4. SYNC
+// 4. SINCRONIA AVANÇADA DE VÍDEOS (GARANTE O LOOP PERFEITO)
         const v1 = document.querySelector('.video-raw');
         const v2 = document.querySelector('.video-after');
+        
         if(v1 && v2) { 
+            // Se der play/pause em um, o outro obedece
             v1.onplay = () => v2.play();
             v1.onpause = () => v2.pause();
-            v1.onseeking = () => v2.currentTime = v1.currentTime;
-            v1.onseeked = () => v2.currentTime = v1.currentTime;
+            
+            // O Segredo do Loop: Monitora o tempo o tempo todo
+            v1.addEventListener('timeupdate', () => {
+                // Se a diferença for maior que 0.1s (desincronizou), força o vídeo 2 a pular para o tempo do vídeo 1
+                if (!v1.seeking && Math.abs(v1.currentTime - v2.currentTime) > 0.1) {
+                    v2.currentTime = v1.currentTime;
+                }
+            });
         }
     </script>
 </body>
