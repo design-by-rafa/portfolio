@@ -45,26 +45,46 @@
             pointer-events: none; 
         }
 
+        ./* ========================================= */
+        /* CORREÇÃO: CAPA LIMPA E ARREDONDADA        */
+        /* ========================================= */
+
+        /* 1. Garanta que a seção pai esteja normal */
         .hero-section {
             height: 100vh; height: 100svh; width: 100%;
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
-            
-            /* NOVO: Fica acima da textura de TV (que é z-index 999) */
-            z-index: 1000; 
+            /* Removi o z-index e border-radius daqui que causei o problema antes */
+        }
 
-            /* NOVO: Bordas arredondadas na seção inteira */
-            border-radius: 30px; 
-            
-            /* Opcional: Se quiser que a borda desencoste um pouco da tela, 
-               descomente as linhas abaixo para criar uma moldura: */
-            /* width: calc(100% - 30px);
-            height: calc(100vh - 30px);
-            margin: 15px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            */
+        /* 2. Aplique a mágica DIRETAMENTE no vídeo */
+        .minha-imagem {
+            width: 40%; /* Mantém a proporção original inicial */
+            height: auto;
+            border-radius: 20px; /* Borda arredondada (aumentei um pouco pra destacar) */
+
+            /* O TRUQUE PARA LIMPAR A TEXTURA DE TV: */
+            position: relative; /* Necessário para o z-index funcionar */
+            z-index: 1001; /* Fica ACIMA do z-index 999 da textura de fundo */
+
+            box-shadow: 0 0 60px rgba(255,255,255,0.05);
+            object-fit: cover;
+            filter: brightness(0.6);
+            will-change: transform;
+        }
+
+        /* 3. Importante: O texto tem que ficar acima do vídeo limpo */
+        .texto-overlay {
+            position: absolute;
+            z-index: 1002; /* Maior que o vídeo */
+            text-align: center; pointer-events: none; width: 90%;
         }
         
+        /* O disclaimer e a setinha também precisam subir */
+        .hero-disclaimer, .scroll-indicator {
+            z-index: 1003;
+        }
+
         .texto-overlay { position: absolute; z-index: 2; text-align: center; pointer-events: none; width: 90%; }
 
        h1 { 
@@ -609,11 +629,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
