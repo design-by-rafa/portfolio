@@ -528,49 +528,59 @@
                 snap: { snapTo: 1 / (secoes.length - 1), duration: 0.5, delay: 0.1, ease: "power1.out" }
             }
         });
-// --- 5. LÓGICA DE MÚLTIPLOS SLIDERS (SMOOTH) ---
+// --- LÓGICA DE MÚLTIPLOS SLIDERS (CORRIGIDO PARA 2 OU MAIS VÍDEOS) ---
         
-        // Procura todos os containers de vídeo na página
+        // 1. Encontra TODAS as caixas de vídeo na página
         const containers = document.querySelectorAll('.video-container');
 
+        // 2. Cria uma automação para cada caixa encontrada
         containers.forEach(container => {
+            // Busca os elementos APENAS dentro desta caixa específica
             const sliderInput = container.querySelector('.slider-control');
             const linha = container.querySelector('.divisor-line');
             const botao = container.querySelector('.divisor-button');
-            const videoFront = container.querySelector('.video-front');
-            const videoBack = container.querySelector('.video-back');
+            const videoFront = container.querySelector('.video-front'); // Vídeo da Frente (Raw)
+            const videoBack = container.querySelector('.video-back');   // Vídeo de Trás (Graded)
             
+            // Variáveis exclusivas para este slider
             let targetPos = 50;
             let currentPos = 50;
 
-            // 1. Ouve o input DESTE slider específico
-            sliderInput.addEventListener('input', (e) => {
-                targetPos = parseFloat(e.target.value);
-            });
+            // A. Ouve o movimento do slider (Input)
+            if (sliderInput) {
+                sliderInput.addEventListener('input', (e) => {
+                    targetPos = parseFloat(e.target.value);
+                });
+            }
 
-            // 2. Animação Smooth para ESTE slider
+            // B. Loop de Animação Suave (Smooth)
             function renderLoop() {
+                // Efeito de inércia (o valor atual persegue o alvo)
                 currentPos += (targetPos - currentPos) * 0.08; 
                 
-                // Aplica só nos elementos deste container
-                linha.style.left = currentPos + "%";
-                botao.style.left = currentPos + "%";
-                videoFront.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
+                // Aplica o visual
+                if (linha && botao && videoFront) {
+                    linha.style.left = currentPos + "%";
+                    botao.style.left = currentPos + "%";
+                    // O corte mágico (Clip Path)
+                    videoFront.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
+                }
 
-                // Continua o loop se a diferença for visível (economiza bateria)
+                // Mantém o loop rodando se houver movimento
                 if (Math.abs(targetPos - currentPos) > 0.1) {
                     requestAnimationFrame(renderLoop);
                 } else {
-                    // Pausa o loop se parou de mexer, retoma no próximo input
                     requestAnimationFrame(renderLoop); 
                 }
             }
-            renderLoop(); // Inicia
+            renderLoop(); // Inicia o motor
 
-            // 3. Sincronia de Loop (Raw e Graded juntos)
+            // C. Sincronia dos Vídeos (Play/Pause juntos)
             if(videoFront && videoBack) { 
                 videoFront.onplay = () => videoBack.play();
                 videoFront.onpause = () => videoBack.pause();
+                
+                // Garante que se um pular o tempo, o outro acompanha
                 videoFront.addEventListener('timeupdate', () => {
                     if (!videoFront.seeking && Math.abs(videoFront.currentTime - videoBack.currentTime) > 0.1) {
                         videoBack.currentTime = videoFront.currentTime;
@@ -592,6 +602,7 @@
     </script>
 </body>
 </html>
+
 
 
 
