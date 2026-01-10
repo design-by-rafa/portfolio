@@ -45,34 +45,51 @@
             pointer-events: none; 
         }
 
-        ./* ========================================= */
-        /* CORREÇÃO: CAPA LIMPA E ARREDONDADA        */
+/* ========================================= */
+        /* 2. CAPA (HERO SECTION) - CORRIGIDO       */
         /* ========================================= */
-
-        /* 1. Garanta que a seção pai esteja normal */
         .hero-section {
             height: 100vh; height: 100svh; width: 100%;
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
-            /* Removi o z-index e border-radius daqui que causei o problema antes */
+            /* A seção fica normal, atrás da textura */
         }
 
-        /* 2. Aplique a mágica DIRETAMENTE no vídeo */
         .minha-imagem {
-            width: 40%; /* Mantém a proporção original inicial */
-            height: auto;
-            border-radius: 20px; /* Borda arredondada (aumentei um pouco pra destacar) */
-
-            /* O TRUQUE PARA LIMPAR A TEXTURA DE TV: */
-            position: relative; /* Necessário para o z-index funcionar */
-            z-index: 1001; /* Fica ACIMA do z-index 999 da textura de fundo */
-
-            box-shadow: 0 0 60px rgba(255,255,255,0.05);
-            object-fit: cover;
-            filter: brightness(0.6);
-            will-change: transform;
+            /* 1. TAMANHO INICIAL (O CARTÃO PEQUENO) */
+            width: 40vw; /* 40% da largura da tela */
+            max-width: 600px; /* Trava para não ficar gigante em monitores ultrawide */
+            height: auto; 
+            aspect-ratio: 16/9; /* Mantém formato de vídeo */
+            
+            /* 2. ESTÉTICA (Borda e Sombra) */
+            border-radius: 20px; 
+            box-shadow: 0 0 60px rgba(0,0,0,0.5);
+            object-fit: cover; 
+            
+            /* 3. O TRUQUE DO "SEM CHUVISCO" */
+            position: relative; 
+            z-index: 1001; /* Fica ACIMA da textura de TV (999) */
+            
+            will-change: transform; /* Otimiza a animação de crescimento */
         }
 
+        /* 4. TEXTO TEM QUE FICAR NA FRENTE DO VÍDEO */
+        .texto-overlay { 
+            position: absolute; 
+            z-index: 1002; /* Maior que o vídeo (1001) */
+            text-align: center; 
+            pointer-events: none; 
+            width: 90%; 
+        }
+
+        /* MOBILE: No celular ele começa um pouco maior (85%) pra ver melhor */
+        @media (max-width: 768px) {
+            .minha-imagem {
+                width: 85vw;
+                max-width: none;
+            }
+        }    
         /* 3. Importante: O texto tem que ficar acima do vídeo limpo */
         .texto-overlay {
             position: absolute;
@@ -629,3 +646,4 @@
     </script>
 </body>
 </html>
+
