@@ -46,47 +46,52 @@
         }
 
 /* ========================================= */
-        /* 2. CAPA (HERO SECTION) - CORRIGIDO       */
+        /* 2. CAPA (HERO SECTION) - CORRIGIDO FINAL  */
         /* ========================================= */
         .hero-section {
             height: 100vh; height: 100svh; width: 100%;
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
-            /* A seção fica normal, atrás da textura */
+            /* Removemos configurações de borda aqui para não bugar */
         }
 
         .minha-imagem {
-            /* 1. TAMANHO INICIAL (O CARTÃO PEQUENO) */
-            width: 40vw; /* 40% da largura da tela */
-            max-width: 600px; /* Trava para não ficar gigante em monitores ultrawide */
+            /* TAMANHO INICIAL (Cartão Pequeno) */
+            width: 40vw; 
+            max-width: 600px;
             height: auto; 
-            aspect-ratio: 16/9; /* Mantém formato de vídeo */
+            aspect-ratio: 16/9;
             
-            /* 2. ESTÉTICA (Borda e Sombra) */
+            /* ESTÉTICA */
             border-radius: 20px; 
             box-shadow: 0 0 60px rgba(0,0,0,0.5);
             object-fit: cover; 
             
-            /* 3. O TRUQUE DO "SEM CHUVISCO" */
+            /* CAMADA DO VÍDEO (Acima da TV, Abaixo do Texto) */
             position: relative; 
-            z-index: 1001; /* Fica ACIMA da textura de TV (999) */
+            z-index: 1001; 
             
-            will-change: transform; /* Otimiza a animação de crescimento */
+            will-change: transform;
         }
 
-        /* 4. TEXTO TEM QUE FICAR NA FRENTE DO VÍDEO */
         .texto-overlay { 
             position: absolute; 
-            z-index: 1002; /* Maior que o vídeo (1001) */
+            /* AQUI ESTÁ A CORREÇÃO: Z-Index bem alto para garantir */
+            z-index: 2000; 
             text-align: center; 
             pointer-events: none; 
             width: 90%; 
         }
 
-        /* MOBILE: No celular ele começa um pouco maior (85%) pra ver melhor */
+        /* O disclaimer e a setinha também precisam ficar na frente de tudo */
+        .hero-disclaimer, .scroll-indicator {
+            z-index: 2001;
+        }
+
+        /* AJUSTE MOBILE */
         @media (max-width: 768px) {
             .minha-imagem {
-                width: 85vw;
+                width: 85vw; /* No celular fica maiorzinho pra ver melhor */
                 max-width: none;
             }
         }    
@@ -646,4 +651,5 @@
     </script>
 </body>
 </html>
+
 
