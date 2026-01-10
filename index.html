@@ -1,922 +1,525 @@
 <!DOCTYPE html>
-
 <html lang="pt-br">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
     
-
     <title>Portfólio | Editor & Designer</title>
-
     <meta name="description" content="Portfólio de Edição de Vídeo e Color Grading.">
-
     <meta name="theme-color" content="#050505">
-
     
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:image" content="https://seusite.github.io/thumb-compartilhamento.jpg">
 
     <style>
 
-    
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         
+        html {
+            scroll-behavior: smooth;
+        }
 
         body { 
-
             background-color: #050505; 
-
             color: white; 
-
             font-family: 'Arial', sans-serif;
-
             overflow-x: hidden; 
-
             -webkit-overflow-scrolling: touch; 
-
         }
 
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
 
+        ::selection { background: #ffffff; color: #000000; text-shadow: none; }
+        ::-moz-selection { background: #ffffff; color: #000000; text-shadow: none; }
 
         body::before {
-
             content: " "; display: block; position: fixed;
-
             top: 0; left: 0; bottom: 0; right: 0;
-
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-
             z-index: 999;
-
             background-size: 100% 2px, 3px 100%;
-
             pointer-events: none; 
-
         }
-
-
 
         .hero-section {
-
-            height: 100vh; height: 100svh;
-
-            width: 100%;
-
+            height: 100vh; height: 100svh; width: 100%;
             display: flex; align-items: center; justify-content: center;
-
             position: relative; overflow: hidden;
-
         }
-
-
 
         .minha-imagem {
-
-            width: 40%; height: auto;
-
-            border-radius: 15px;
-
+            width: 40%; height: auto; border-radius: 15px;
             box-shadow: 0 0 60px rgba(255,255,255,0.05);
-
-            z-index: 1; object-fit: cover;
-
-            filter: brightness(0.6);
-
+            z-index: 1; object-fit: cover; filter: brightness(0.6);
             will-change: transform;
-
         }
-
-
 
         .texto-overlay { position: absolute; z-index: 2; text-align: center; pointer-events: none; width: 90%; }
 
-
-
         h1 { 
-
-            font-size: 5rem; margin: 0; 
-
-            text-transform: uppercase; letter-spacing: 5px; 
-
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-
-            line-height: 1.1;
-
+            font-size: 5rem; margin: 0; text-transform: uppercase; letter-spacing: 5px; 
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5); line-height: 1.1;
         }
-
         p { font-size: 1.5rem; font-weight: lighter; margin-top: 15px; opacity: 0.9; }
 
+        .hero-disclaimer {
+            position: absolute;
+            bottom: 90px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 4;
+            font-size: 0.75rem; color: white;
+            opacity: 0.5; 
+            text-align: center; width: 90%; max-width: 600px;
+            
+            pointer-events: none; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
 
+        .disclaimer-link {
+            color: white; 
+            text-decoration: underline;
+            cursor: pointer;
+            
+            pointer-events: auto; 
+            transition: 0.3s;
+        }
+        
+        .disclaimer-link:hover {
+            color: #00eaff; /* Azul Neon no Hover */
+            text-shadow: 0 0 10px rgba(0, 234, 255, 0.8);
+            opacity: 1;
+        }
 
         .scroll-indicator {
-
-            position: absolute; bottom: 30px; left: 50%;
-
-            transform: translateX(-50%); z-index: 5; text-align: center; opacity: 0.7;
-
-            animation: flutuar 2s infinite;
-
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 5; text-align: center; opacity: 0.7; animation: flutuar 2s infinite;
         }
-
         .scroll-indicator span { font-size: 0.8rem; letter-spacing: 2px; display: block; margin-bottom: 5px; }
-
         .scroll-indicator .arrow { font-size: 1.5rem; }
-
-        @keyframes flutuar {
-
-            0%, 100% { transform: translate(-50%, 0); }
-
-            50% { transform: translate(-50%, 10px); }
-
-        }
-
-
+        @keyframes flutuar { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
 
         .galeria-section {
-
-            width: 300%; 
-
-            height: 100vh; height: 100svh;
-
-            display: flex; flex-wrap: nowrap;
-
-            background-color: #050505;
-
+            width: 300%; height: 100vh; height: 100svh;
+            display: flex; flex-wrap: nowrap; background-color: #050505;
         }
-
-
 
         .projeto-card {
-
             width: 100vw; height: 100vh; height: 100svh;
-
             display: flex; align-items: center; justify-content: center;
-
-            flex-direction: column;
-
-            border-right: 1px solid #111;
-
+            flex-direction: column; border-right: 1px solid #111;
         }
-
-
 
         .img-projeto {
-
-            width: 60%; height: 60vh;
-
-            object-fit: cover; border-radius: 10px;
-
-            background: #111; margin-bottom: 20px;
-
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-
+            width: 60%; height: 60vh; object-fit: cover; border-radius: 10px;
+            background: #111; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
-
-
 
         .info-projeto h3 { font-size: 2rem; margin-bottom: 5px; color: #fff; }
-
         .info-projeto span { color: #888; font-size: 1.2rem; }
-
-
-
+        
         .servicos-section {
-
             background-color: #050505; padding: 100px 10%;
-
             display: flex; flex-direction: column; justify-content: center;
-
             min-height: 80vh; position: relative; z-index: 10;
-
         }
-
-
 
         .servico-item {
-
             border-top: 1px solid #333; padding: 40px 0;
-
-            display: flex; align-items: baseline;
-
-            transition: all 0.3s ease;
-
-            cursor: default;
-
+            display: flex; align-items: baseline; transition: all 0.3s ease; cursor: default;
         }
-
         .servico-item:last-child { border-bottom: 1px solid #333; }
 
-
-
         .servico-item:hover {
-
-            background-color: #111;
-
-            padding-left: 30px;
-
-            border-top: 1px solid #fff; 
-
-            border-bottom: 1px solid #fff; 
-
+            background-color: #111; padding-left: 30px;
+            border-top: 1px solid #fff; border-bottom: 1px solid #fff; 
         }
-
-
-
-        .servico-item:hover .servico-nome {
-
-            text-shadow: 0 0 15px rgba(255,255,255,0.3); 
-
-        }
-
-
+        .servico-item:hover .servico-nome { text-shadow: 0 0 15px rgba(255,255,255,0.3); }
 
         .num { font-size: 1.2rem; color: #888; margin-right: 30px; font-family: monospace; }
-
         .servico-nome { font-size: 3rem; flex-grow: 1; text-transform: uppercase; margin: 0; color: #fff; transition: 0.3s; }
-
         .servico-desc { font-size: 1.2rem; color: #ccc; margin: 0; text-align: right; }
 
-
-
         .software-marquee {
-
-            background: #111; padding: 25px 0;
-
-            overflow: hidden; white-space: nowrap;
-
-            position: relative; z-index: 10;
-
-            border-top: 1px solid #333; border-bottom: 1px solid #333;
-
+            background: #111; padding: 25px 0; overflow: hidden; white-space: nowrap;
+            position: relative; z-index: 10; border-top: 1px solid #333; border-bottom: 1px solid #333;
             transition: 0.3s;
-
         }
-
-        
-
         .track { display: inline-flex; align-items: center; animation: letreiro 20s linear infinite; }
-
-        
-
         .track span { font-size: 1.5rem; font-weight: bold; color: #666; margin-left: 40px; letter-spacing: 2px; transition: 0.3s; }
-
+        .icon-soft { width: 30px; height: 30px; margin-left: 15px; filter: grayscale(100%); opacity: 0.5; transition: all 0.4s ease; }
         
-
-        .icon-soft { 
-
-            width: 30px; height: 30px; margin-left: 15px; 
-
-            filter: grayscale(100%); opacity: 0.5; 
-
-            transition: all 0.4s ease; 
-
-        }
-
-        
-
-        .software-marquee:hover {
-
-            background: #1a1a1a; 
-
-        }
-
-        
-
-        .software-marquee:hover .icon-soft {
-
-            filter: grayscale(0%); 
-
-            opacity: 1;           
-
-            transform: scale(1.2); 
-
-        }
-
-        
-
-        .software-marquee:hover span {
-
-            color: #fff; 
-
-        }
-
-
-
+        .software-marquee:hover { background: #1a1a1a; }
+        .software-marquee:hover .icon-soft { filter: grayscale(0%); opacity: 1; transform: scale(1.2); }
+        .software-marquee:hover span { color: #fff; }
         @keyframes letreiro { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        
+        .sobre-section {
+            background-color: #050505; padding: 100px 10%; display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid #222; position: relative; z-index: 10;
+        }
+        .sobre-content { display: flex; align-items: center; justify-content: center; gap: 80px; max-width: 1200px; }
+        
+        .sobre-foto img {
+            width: 400px; height: 500px; object-fit: cover; border-radius: 10px;
+            filter: grayscale(100%); transition: 0.5s; box-shadow: 20px 20px 0px #111;
+        }
+        .sobre-foto img:hover { filter: grayscale(0%); box-shadow: 10px 10px 0px #333; transform: translate(5px, 5px); }
 
+        .sobre-texto { max-width: 500px; }
+        .sobre-texto h2 { font-size: 3rem; margin-bottom: 10px; line-height: 1; }
+        .sobre-texto h4 { font-size: 1.2rem; color: #666; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+        .sobre-texto p { font-size: 1.1rem; color: #ccc; margin-bottom: 20px; line-height: 1.6; }
+        
+        .sobre-detalhes { margin-top: 30px; display: flex; gap: 20px; }
+        .sobre-detalhes span { background: #111; padding: 10px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: bold; border: 1px solid #333; }
 
-
-/* ========================================= */
-
-        /* 6. COLOR GRADING (CORRIGIDO)             */
-
-        /* ========================================= */
+        .sobre-texto h2, .sobre-texto h4, .sobre-texto p, .sobre-texto strong { transition: all 0.4s ease; }
+        
+        .sobre-texto:hover h2 { color: #ffffff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.4); }
+        .sobre-texto:hover h4 { color: #bbb; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
+        .sobre-texto:hover p { color: #eee; }
+        .sobre-texto:hover strong { color: #00eaff; text-shadow: 0 0 10px rgba(0, 234, 255, 0.7), 0 0 20px rgba(0, 234, 255, 0.3); }
+        .sobre-texto:hover .sobre-detalhes span { background: #222; border-color: #555; color: white; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
 
         .comparison-section {
-
-            height: 100vh; height: 100svh; width: 100%;
-
-            background: #080808;
-
-            display: flex; flex-direction: column;
-
-            align-items: center; justify-content: center;
-
-            
-
-            /* AQUI ESTÁ A MÁGICA: */
-
-            position: relative; 
-
-            z-index: 1000; /* Maior que o 999 da textura, então fica por cima */
-
-        }        }
-
-
+            height: 100vh; height: 100svh; width: 100%; background: #080808;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; z-index: 1000; /* Fica acima da textura */
+        }
 
         .comparison-title { margin-bottom: 20px; text-align: center; z-index: 5; width: 90%; }
-
         .comparison-title h2 { font-size: 2.5rem; margin-bottom: 5px; }
 
-
-
         .video-container {
-
-            position: relative;
-
-            width: 70%; height: 65vh; 
-
-            border-radius: 15px; overflow: hidden;
-
-            box-shadow: 0 0 50px rgba(255,255,255,0.05);
-
-            -webkit-user-select: none; user-select: none;
-
+            position: relative; width: 70%; height: 65vh; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 0 50px rgba(255,255,255,0.05); -webkit-user-select: none; user-select: none;
         }
-
-
 
         .video-compare { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-
-        .video-after { z-index: 2; width: 100%; clip-path: inset(0 50% 0 0); }
-
-
+        
+        /* LOGICA: RAW (Front) na esquerda, cortando para revelar o GRADED (Back) na direita */
+        .video-front { z-index: 2; width: 100%; clip-path: inset(0 50% 0 0); }
 
         .slider-control {
-
             position: absolute; top: 0; bottom: 0; left: 0; right: 0;
-
-            width: 100%; height: 100%; z-index: 20; margin: 0;
-
-            opacity: 0; cursor: col-resize;
-
-            touch-action: pan-y; 
-
+            width: 100%; height: 100%; z-index: 20; margin: 0; opacity: 0; cursor: col-resize; touch-action: pan-y; 
         }
-
-
 
         .divisor-line {
-
             position: absolute; top: 0; bottom: 0; left: 50%;
-
-            width: 2px; background: white; z-index: 9; pointer-events: none;
-
-            box-shadow: 0 0 10px rgba(0,0,0,0.8);
-
+            width: 2px; background: white; z-index: 9; pointer-events: none; box-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
-
         .divisor-button {
-
-            position: absolute; top: 50%; left: 50%;
-
-            transform: translate(-50%, -50%);
-
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 40px; height: 40px; background: white; border-radius: 50%;
-
-            z-index: 9; pointer-events: none; display: flex;
-
-            align-items: center; justify-content: center; color: black; font-weight: bold;
-
+            z-index: 9; pointer-events: none; display: flex; align-items: center; justify-content: center; color: black; font-weight: bold;
         }
-
-
 
         .label-video {
-
             position: absolute; top: 20px; padding: 5px 10px;
-
-            background: rgba(0,0,0,0.7); border-radius: 5px;
-
-            font-size: 12px; font-weight: bold; z-index: 8; pointer-events: none;
-
+            background: rgba(0,0,0,0.7); border-radius: 5px; font-size: 12px; font-weight: bold; z-index: 8; pointer-events: none;
         }
+        .label-raw { left: 20px; } /* Raw na esquerda */
+        .label-grade { right: 20px; } /* Graded na direita */
 
-        .label-raw { right: 20px; }
-
-        .label-grade { left: 20px; }
-
-
-
+        /* DISCLAIMER: Aumentei a margem inferior para desgrudar do rodapé */
         .disclaimer-text {
-
-            margin-top: 20px; font-size: 0.9rem; color: #666; font-style: italic;
-
+            margin-top: 20px; 
+            margin-bottom: 60px; /* <--- ESPAÇAMENTO EXTRA AQUI */
+            font-size: 0.9rem; color: #666; font-style: italic;
             text-align: center; max-width: 80%; line-height: 1.4; opacity: 0.8;
-
         }
-
-
-
+        
         .contato-section {
-
-            height: 60vh; background-color: #050505;
-
-            display: flex; align-items: center; justify-content: center;
-
-            flex-direction: column; text-align: center;
-
+            height: auto; 
+            padding: 80px 20px; 
+            background-color: #050505;
+            display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;
             border-top: 1px solid #222; position: relative; z-index: 10;
-
         }
-
         .btn-contato {
-
-            margin-top: 30px; padding: 15px 50px;
-
-            background: white; color: black;
-
-            text-decoration: none; font-weight: bold;
-
-            border-radius: 50px; font-size: 1.2rem;
-
-            transition: 0.3s;
-
+            margin-top: 30px; padding: 15px 50px; background: white; color: black;
+            text-decoration: none; font-weight: bold; border-radius: 50px; font-size: 1.2rem; transition: 0.3s;
         }
-
         .btn-contato:active { transform: scale(0.95); }
-
         .btn-contato:hover { transform: scale(1.1); background: #ddd; }
 
-
+        .back-to-top {
+            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
+            background: white; color: black; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; text-decoration: none; font-weight: bold; z-index: 100;
+            opacity: 0; visibility: hidden; transition: 0.3s; box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        .back-to-top.show { opacity: 1; visibility: visible; }
+        .back-to-top:hover { transform: scale(1.1); background: #ddd; }
 
         @media (max-width: 768px) {
-
-            
-
             h1 { font-size: 2.8rem; letter-spacing: 2px; word-wrap: break-word; }
-
             p { font-size: 1rem; padding: 0 20px; }
-
             .minha-imagem { width: 85%; height: 50vh; border-radius: 10px; }
-
             
-
             .img-projeto { width: 90%; height: 35vh; margin-top: 0; margin-bottom: 20px;}
-
             .info-projeto h3 { font-size: 1.5rem; }
-
             
-
             .servicos-section { padding: 60px 5%; }
-
             .servico-item { flex-direction: column; padding: 25px 0; }
-
             .servico-nome { font-size: 2rem; margin-bottom: 5px; }
-
             .servico-item:hover { padding-left: 0; background: transparent; border-top: 1px solid #333; }
-
             .servico-desc { text-align: left; font-size: 1rem; color: #888; margin-top: 5px;}
-
             .num { display: none; }
 
-
-
             .track span { font-size: 1rem; margin-left: 20px; }
-
             .icon-soft { width: 20px; height: 20px; margin-left: 10px; }
-
-
+            
+            .sobre-content { flex-direction: column; gap: 40px; }
+            .sobre-foto img { width: 100%; height: auto; max-height: 400px; box-shadow: 10px 10px 0px #111; }
+            .sobre-texto { text-align: center; }
+            .sobre-texto h2 { font-size: 2.5rem; }
+            .sobre-detalhes { justify-content: center; }
 
             .video-container { width: 90%; height: 45vh; }
-
             .comparison-title h2 { font-size: 1.8rem; }
-
             .disclaimer-text { font-size: 0.75rem; margin-top: 15px; }
-
-            
-
             .divisor-button { width: 50px; height: 50px; font-size: 1.2rem; }
-
+            
+            .contato-section { 
+                padding: 60px 20px 120px 20px; 
+            }
         }
-
     </style>
-
 </head>
-
 <body>
 
-
-
     <div class="hero-section">
-
         <div class="texto-overlay">
-
             <h1>RAFAEL SOARES</h1>
-
             <p>EDITOR & COLORISTA</p>
-
         </div>
-
-        <video class="minha-imagem" autoplay loop muted playsinline>
-
+        
+        <video class="minha-imagem" autoplay loop muted playsinline poster="assets/capa-poster.jpg">
             <source src="showreel-capa.mp4" type="video/mp4">
-
         </video>
+        
+        <div class="hero-disclaimer">
+            *Os vídeos deste portfólio foram editados/tratados por mim. <a href="https://www.youtube.com/playlist?list=PLGrEAbVMjvNhuY1LS9IvyzUx_ZV4fIQvG" target="_blank" class="disclaimer-link">O material bruto original pertence aos seus respectivos proprietários.</a>
+        </div>
 
         <div class="scroll-indicator">
-
             <span>ROLE PARA BAIXO</span>
-
             <div class="arrow">↓</div>
-
         </div>
-
     </div>
-
-
 
     <div class="galeria-section">
-
         <div class="projeto-card">
-
-            <video class="img-projeto" autoplay loop muted playsinline>
-
+            <video class="img-projeto" autoplay loop muted playsinline poster="assets/video1-poster.jpg">
                 <source src="video1.mp4" type="video/mp4">
-
             </video>
-
             <div class="info-projeto">
-
                 <h3>Comercial X</h3>
-
                 <span>Edição Dinâmica</span>
-
             </div>
-
         </div>
-
         <div class="projeto-card">
-
-            <video class="img-projeto" autoplay loop muted playsinline>
-
+            <video class="img-projeto" autoplay loop muted playsinline poster="assets/video2-poster.jpg">
                 <source src="video2.mp4" type="video/mp4">
-
             </video>
-
             <div class="info-projeto">
-
                 <h3>Clipe Musical Y</h3>
-
                 <span>VFX & Flow</span>
-
             </div>
-
         </div>
-
         <div class="projeto-card">
-
             <img src="projeto3.jpg" class="img-projeto" style="object-fit: contain;">
-
             <div class="info-projeto">
-
                 <h3>Identidade Visual</h3>
-
                 <span>Design & Branding</span>
-
             </div>
-
         </div>
-
     </div>
-
-
 
     <div class="servicos-section">
-
         <div class="servico-item">
-
             <span class="num">01</span>
-
             <h3 class="servico-nome">EDIÇÃO DE VÍDEO</h3>
-
             <p class="servico-desc">Publicidade, YouTube & Reels</p>
-
         </div>
-
         <div class="servico-item">
-
             <span class="num">02</span>
-
             <h3 class="servico-nome">COLOR GRADING</h3>
-
             <p class="servico-desc">Correção de Cor & Looks</p>
-
         </div>
-
         <div class="servico-item">
-
             <span class="num">03</span>
-
             <h3 class="servico-nome">MOTION GRAPHICS</h3>
-
             <p class="servico-desc">Animações 2D & VFX</p>
-
         </div>
-
         <div class="servico-item">
-
             <span class="num">04</span>
-
             <h3 class="servico-nome">DESIGN GRÁFICO</h3>
-
             <p class="servico-desc">Thumbnails & Identidade</p>
-
         </div>
-
     </div>
-
-
 
     <div class="software-marquee">
-
         <div class="track">
-
-            <span>ADOBE PREMIERE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" class="icon-soft">
-
-            <span>AFTER EFFECTS</span> <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" class="icon-soft">
-
-            <span>DAVINCI RESOLVE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png" class="icon-soft">
-
-            <span>PHOTOSHOP</span> <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" class="icon-soft">
-
-            <span>ILLUSTRATOR</span> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" class="icon-soft">
-
+            <span>ADOBE PREMIERE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" class="icon-soft" alt="Premiere">
+            <span>AFTER EFFECTS</span> <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" class="icon-soft" alt="After Effects">
+            <span>DAVINCI RESOLVE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png" class="icon-soft" alt="DaVinci">
+            <span>PHOTOSHOP</span> <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" class="icon-soft" alt="Photoshop">
+            <span>ILLUSTRATOR</span> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" class="icon-soft" alt="Illustrator">
             
-
             <span>ADOBE PREMIERE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" class="icon-soft">
-
             <span>AFTER EFFECTS</span> <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" class="icon-soft">
-
             <span>DAVINCI RESOLVE</span> <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png" class="icon-soft">
-
             <span>PHOTOSHOP</span> <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" class="icon-soft">
-
             <span>ILLUSTRATOR</span> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" class="icon-soft">
-
         </div>
-
     </div>
 
-
+    <div class="sobre-section">
+        <div class="sobre-content">
+            <div class="sobre-foto">
+                <img src="minha-foto.jpg" alt="Foto de Rafael Soares">
+            </div>
+            
+            <div class="sobre-texto">
+                <h2>QUEM SOU EU</h2>
+                <h4>Visual Storyteller & Editor</h4>
+                <p>
+                    Mais do que apenas cortar vídeos, eu crio narrativas. Com experiência em <strong>ritmo, sound design e colorimetria</strong>, meu objetivo é transformar material bruto em conteúdo que prende a atenção do primeiro ao último segundo.
+                </p>
+                <p>
+                    Especialista na Suíte Adobe e DaVinci Resolve. Pronto para encarar projetos desafiadores.
+                </p>
+                
+                <div class="sobre-detalhes">
+                    <span>📍 Brasil</span>
+                    <span>🎥 Editor Pro</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="comparison-section">
-
         <div class="comparison-title">
-
             <h2>COLOR GRADING</h2>
-
             <p>Arraste para ver a diferença</p>
-
         </div>
-
-
 
         <div class="video-container">
-
-            <video class="video-compare video-raw" autoplay loop muted playsinline>
-
-                <source src="video-raw.mp4" type="video/mp4">
-
-            </video>
-
-            <video class="video-compare video-after" autoplay loop muted playsinline>
-
+            <video class="video-compare video-back" autoplay loop muted playsinline poster="assets/grade-poster.jpg">
                 <source src="video-grade.mp4" type="video/mp4">
-
             </video>
 
+            <video class="video-compare video-front" autoplay loop muted playsinline poster="assets/raw-poster.jpg">
+                <source src="video-raw.mp4" type="video/mp4">
+            </video>
             
-
-            <div class="label-video label-grade">GRADED</div>
-
             <div class="label-video label-raw">RAW</div>
-
+            <div class="label-video label-grade">GRADED</div>
             
-
             <div class="divisor-line"></div>
-
             <div class="divisor-button">↔</div>
 
-
-
             <input type="range" min="0" max="100" value="50" class="slider-control" oninput="atualizarComparacao(this.value)">
-
         </div>
-
-
 
         <p class="disclaimer-text">
-
             *Material bruto original fornecido no YouTube por <strong>Aziz Ben Amara</strong>.<br>
-
             Este vídeo não foi gravado por mim, eu apenas fiz a correção de cor.
-
         </p>
-
-
-
     </div>
-
-
 
     <div class="contato-section">
-
         <h2 style="font-size: 3rem; margin-bottom: 20px;">VAMOS CONVERSAR!</h2>
-
         <p style="color: gray; margin-bottom: 30px;">Pronto para elevar o nível do seu projeto?</p>
-
         
-
-        <a href="mailto:seuemail@exemplo.com" class="btn-contato">Enviar E-mail</a>
-
-
+        <a href="mailto:rafael.sstx@gmail.com" class="btn-contato">Enviar E-mail</a>
 
         <div style="margin-top: 40px; display: flex; gap: 20px;">
-
-            <a href="https://www.linkedin.com/in/rafael-soares-01969a230?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
-
+            <a href="https://www.linkedin.com/in/rafael-soares-01969a230" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="30" style="filter: invert(1); opacity: 0.6; transition: 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-
             </a>
-
             <a href="https://instagram.com/ownedbyrafa" target="_blank">
-
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="30" style="filter: invert(1); opacity: 0.6; transition: 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-
             </a>
-
         </div>
-
         
-
-        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2024 Seu Nome</p>
-
+        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2026 Rafael Soares</p>
     </div>
 
-
-
-
+    <a href="#" class="back-to-top" aria-label="Voltar ao topo">↑</a>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-
-
     <script>
-
         gsap.registerPlugin(ScrollTrigger);
 
-
-
+        // --- 1. CONFIGURAÇÕES GERAIS ---
         let isMobile = window.innerWidth < 768;
 
-
-
-        // 1. HERO
-
+        // --- 2. ANIMAÇÃO HERO ---
         let tlHero = gsap.timeline({
-
             scrollTrigger: {
-
-                trigger: ".hero-section", 
-
-                start: "top top", 
-
-                end: isMobile ? "+=800" : "+=1500", 
-
-                scrub: 1, 
-
-                pin: true
-
+                trigger: ".hero-section", start: "top top", end: isMobile ? "+=800" : "+=1500", scrub: 1, pin: true
             }
-
         });
-
         tlHero.to(".minha-imagem", { scale: 10, ease: "none" }, 0); 
-
         tlHero.to(".texto-overlay", { opacity: 0, scale: 1.5 }, 0); 
-
         tlHero.to(".scroll-indicator", { opacity: 0 }, 0); 
-
-
-
-        // 2. GALERIA
+        tlHero.to(".hero-disclaimer", { opacity: 0 }, 0); 
 
         let secoes = gsap.utils.toArray(".projeto-card");
-
         gsap.to(secoes, {
-
             xPercent: -100 * (secoes.length - 1),
-
             ease: "none",
-
             scrollTrigger: {
-
-                trigger: ".galeria-section", 
-
-                pin: true, 
-
-                scrub: 2, 
-
-                start: "top top", 
-
-                end: isMobile ? "+=1500" : "+=3000", 
-
+                trigger: ".galeria-section", pin: true, scrub: 2, 
+                start: "top top", end: isMobile ? "+=1500" : "+=3000", 
                 snap: { snapTo: 1 / (secoes.length - 1), duration: 0.5, delay: 0.1, ease: "power1.out" }
-
             }
-
         });
 
-
-
-        // 3. SLIDER
-
         function atualizarComparacao(valor) {
-
             const linha = document.querySelector('.divisor-line');
-
             const botao = document.querySelector('.divisor-button');
-
-            const videoAfter = document.querySelector('.video-after');
-
+            const videoFront = document.querySelector('.video-front'); // Vídeo Raw (Frente)
+            
             linha.style.left = valor + "%";
-
             botao.style.left = valor + "%";
-
-            videoAfter.style.clipPath = `inset(0 ${100 - valor}% 0 0)`;
-
+            videoFront.style.clipPath = `inset(0 ${100 - valor}% 0 0)`;
         }
 
-
-
-// 4. SINCRONIA AVANÇADA DE VÍDEOS (GARANTE O LOOP PERFEITO)
-
-        const v1 = document.querySelector('.video-raw');
-
-        const v2 = document.querySelector('.video-after');
-
-        
-
+        const v1 = document.querySelector('.video-front');
+        const v2 = document.querySelector('.video-back');
         if(v1 && v2) { 
-
-            // Se der play/pause em um, o outro obedece
-
             v1.onplay = () => v2.play();
-
             v1.onpause = () => v2.pause();
-
-            
-
-            // O Segredo do Loop: Monitora o tempo o tempo todo
-
             v1.addEventListener('timeupdate', () => {
-
-                // Se a diferença for maior que 0.1s (desincronizou), força o vídeo 2 a pular para o tempo do vídeo 1
-
                 if (!v1.seeking && Math.abs(v1.currentTime - v2.currentTime) > 0.1) {
-
                     v2.currentTime = v1.currentTime;
-
                 }
-
             });
-
-            
-
         }
+
+        window.addEventListener("load", () => {
+            ScrollTrigger.refresh();
+        });
+
+        // Botão Voltar ao Topo
+        const btnTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) { btnTop.classList.add('show'); } 
+            else { btnTop.classList.remove('show'); }
+        });
 
     </script>
-
 </body>
-
 </html>
-
