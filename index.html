@@ -52,28 +52,48 @@
             height: 100vh; height: 100svh; width: 100%;
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
-            /* Removemos configurações de borda aqui para não bugar */
         }
 
         .minha-imagem {
-            /* TAMANHO INICIAL (Cartão Pequeno) */
-            width: 40vw; 
-            max-width: 600px;
+            /* TAMANHO INICIAL (Voltei para 40% para manter a proporção correta) */
+            width: 40%; 
             height: auto; 
-            aspect-ratio: 16/9;
+            aspect-ratio: 16/9; /* Força o formato retangular de vídeo */
             
             /* ESTÉTICA */
             border-radius: 20px; 
             box-shadow: 0 0 60px rgba(0,0,0,0.5);
             object-fit: cover; 
             
-            /* CAMADA DO VÍDEO (Acima da TV, Abaixo do Texto) */
+            /* A MÁGICA DAS CAMADAS: */
             position: relative; 
-            z-index: 1001; 
+            z-index: 1000; /* Acima da TV (999), mas abaixo do texto */
             
             will-change: transform;
         }
 
+        .texto-overlay { 
+            position: absolute; 
+            
+            /* AQUI ESTÁ A CORREÇÃO DO NOME SUMINDO */
+            z-index: 1001; /* Maior que o vídeo (1000) */
+            
+            text-align: center; 
+            pointer-events: none; 
+            width: 90%; 
+        }
+
+        /* O disclaimer e a setinha ficam no topo de tudo */
+        .hero-disclaimer, .scroll-indicator {
+            z-index: 1002;
+        }
+
+        /* AJUSTE MOBILE */
+        @media (max-width: 768px) {
+            .minha-imagem {
+                width: 85%; /* No celular ocupa mais espaço */
+            }
+        }
         .texto-overlay { 
             position: absolute; 
             /* AQUI ESTÁ A CORREÇÃO: Z-Index bem alto para garantir */
@@ -651,5 +671,6 @@
     </script>
 </body>
 </html>
+
 
 
