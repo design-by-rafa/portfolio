@@ -81,29 +81,25 @@
             transform: translateZ(0);
         }
 
-     .hero-disclaimer {
+.hero-disclaimer {
             position: absolute;
             bottom: 90px;
-            left: 50%; transform: translateX(-50%);
+            left: 50%; 
+            
+    transform: translateX(-50%) translateZ(0); 
+            
             z-index: 4;
-            font-size: 0.75rem; color: white;
-            
-            /* MUDANÇA: Em vez de opacity 0.5, usei cor com transparência. 
-               Isso evita que o navegador fique recalculando a opacidade toda hora. */
+            font-size: 0.75rem; 
             color: rgba(255, 255, 255, 0.6); 
-            opacity: 1; /* Deixe em 1 aqui */
-            
+            opacity: 1; 
             text-align: center; width: 90%; max-width: 600px;
             pointer-events: none;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 
-            /* FIX ANTI-PISCAR */
             -webkit-font-smoothing: antialiased;
             backface-visibility: hidden;
-            transform: translateZ(0);
-            will-change: opacity;
+            will-change: opacity, transform;
         }
-
         .disclaimer-link {
             color: white; 
             text-decoration: underline;
@@ -114,7 +110,7 @@
         }
         
         .disclaimer-link:hover {
-            color: #00eaff; /* Azul Neon no Hover */
+            color: #00eaff; 
             text-shadow: 0 0 10px rgba(0, 234, 255, 0.8);
             opacity: 1;
         }
@@ -565,5 +561,6 @@
     </script>
 </body>
 </html>
+
 
 
