@@ -201,7 +201,6 @@
 
         .video-compare { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
         
-        /* LOGICA: RAW (Front) na esquerda, cortando para revelar o GRADED (Back) na direita */
         .video-front { z-index: 2; width: 100%; clip-path: inset(0 50% 0 0); }
 
         .slider-control {
@@ -223,13 +222,12 @@
             position: absolute; top: 20px; padding: 5px 10px;
             background: rgba(0,0,0,0.7); border-radius: 5px; font-size: 12px; font-weight: bold; z-index: 8; pointer-events: none;
         }
-        .label-raw { left: 20px; } /* Raw na esquerda */
-        .label-grade { right: 20px; } /* Graded na direita */
+        .label-raw { left: 20px; } 
+        .label-grade { right: 20px; }
 
-        /* DISCLAIMER: Aumentei a margem inferior para desgrudar do rodapé */
         .disclaimer-text {
             margin-top: 20px; 
-            margin-bottom: 60px; /* <--- ESPAÇAMENTO EXTRA AQUI */
+            margin-bottom: 60px; 
             font-size: 0.9rem; color: #666; font-style: italic;
             text-align: center; max-width: 80%; line-height: 1.4; opacity: 0.8;
         }
@@ -462,16 +460,14 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // --- 1. CONFIGURAÇÕES GERAIS ---
         let isMobile = window.innerWidth < 768;
 
-        // --- 2. ANIMAÇÃO HERO ---
         let tlHero = gsap.timeline({
             scrollTrigger: {
                 trigger: ".hero-section", start: "top top", end: isMobile ? "+=800" : "+=1500", scrub: 1, pin: true
             }
         });
-        tlHero.to(".minha-imagem", { scale: 10, ease: "none" }, 0); 
+        tlHero.to(".minha-imagem", { scale: 3, ease: "none" }, 0); 
         tlHero.to(".texto-overlay", { opacity: 0, scale: 1.5 }, 0); 
         tlHero.to(".scroll-indicator", { opacity: 0 }, 0); 
         tlHero.to(".hero-disclaimer", { opacity: 0 }, 0); 
@@ -513,7 +509,6 @@
             ScrollTrigger.refresh();
         });
 
-        // Botão Voltar ao Topo
         const btnTop = document.querySelector('.back-to-top');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 500) { btnTop.classList.add('show'); } 
@@ -523,3 +518,4 @@
     </script>
 </body>
 </html>
+
