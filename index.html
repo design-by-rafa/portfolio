@@ -12,12 +12,12 @@
     <meta property="og:image" content="https://seusite.github.io/thumb-compartilhamento.jpg">
 
     <style>
-
+        /* ========================================= */
+        /* 1. CONFIGURAÇÕES GERAIS (RESET & BASE)   */
+        /* ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body { 
             background-color: #050505; 
@@ -35,6 +35,7 @@
         ::selection { background: #ffffff; color: #000000; text-shadow: none; }
         ::-moz-selection { background: #ffffff; color: #000000; text-shadow: none; }
 
+        /* TEXTURA DE TV (Fica no fundo, Z-Index 999) */
         body::before {
             content: " "; display: block; position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
@@ -45,8 +46,8 @@
             pointer-events: none; 
         }
 
-/* ========================================= */
-        /* 2. CAPA (HERO SECTION) - CORRIGIDO FINAL  */
+        /* ========================================= */
+        /* 2. CAPA (HERO SECTION)                   */
         /* ========================================= */
         .hero-section {
             height: 100vh; height: 100svh; width: 100%;
@@ -55,81 +56,34 @@
         }
 
         .minha-imagem {
-            /* TAMANHO INICIAL (Voltei para 40% para manter a proporção correta) */
+            /* TAMANHO INICIAL */
             width: 40%; 
             height: auto; 
-            aspect-ratio: 16/9; /* Força o formato retangular de vídeo */
+            aspect-ratio: 16/9; 
             
             /* ESTÉTICA */
             border-radius: 20px; 
             box-shadow: 0 0 60px rgba(0,0,0,0.5);
             object-fit: cover; 
             
-            /* A MÁGICA DAS CAMADAS: */
+            /* CAMADAS: Acima da TV (999), Abaixo do Texto (1001) */
             position: relative; 
-            z-index: 1000; /* Acima da TV (999), mas abaixo do texto */
+            z-index: 1000; 
             
             will-change: transform;
         }
 
-.texto-overlay { 
-            position: absolute; 
-            z-index: 99999; /* Valor absurdo para garantir */
-            text-align: center; 
-            pointer-events: none; 
-            width: 90%; 
-            
-            /* Isso ajuda o navegador a entender que é uma camada separada */
-            transform: translateZ(100px); 
-        }
-
-        /* O disclaimer e a setinha ficam no topo de tudo */
-        .hero-disclaimer, .scroll-indicator {
-            z-index: 1002;
-        }
-
-        /* AJUSTE MOBILE */
-        @media (max-width: 768px) {
-            .minha-imagem {
-                width: 85%; /* No celular ocupa mais espaço */
-            }
-        }
+        /* TEXTO NA FRENTE DE TUDO */
         .texto-overlay { 
             position: absolute; 
-            /* AQUI ESTÁ A CORREÇÃO: Z-Index bem alto para garantir */
-            z-index: 2000; 
+            z-index: 2000; /* Garante que fique na frente */
             text-align: center; 
             pointer-events: none; 
             width: 90%; 
+            transform: translateZ(100px); /* Força renderização 3D */
         }
 
-        /* O disclaimer e a setinha também precisam ficar na frente de tudo */
-        .hero-disclaimer, .scroll-indicator {
-            z-index: 2001;
-        }
-
-        /* AJUSTE MOBILE */
-        @media (max-width: 768px) {
-            .minha-imagem {
-                width: 85vw; /* No celular fica maiorzinho pra ver melhor */
-                max-width: none;
-            }
-        }    
-        /* 3. Importante: O texto tem que ficar acima do vídeo limpo */
-        .texto-overlay {
-            position: absolute;
-            z-index: 1002; /* Maior que o vídeo */
-            text-align: center; pointer-events: none; width: 90%;
-        }
-        
-        /* O disclaimer e a setinha também precisam subir */
-        .hero-disclaimer, .scroll-indicator {
-            z-index: 1003;
-        }
-
-        .texto-overlay { position: absolute; z-index: 2; text-align: center; pointer-events: none; width: 90%; }
-
-       h1 { 
+        h1 { 
             font-size: 5rem; margin: 0; 
             text-transform: uppercase; letter-spacing: 5px; 
             text-shadow: 0 10px 30px rgba(0,0,0,0.5); 
@@ -143,41 +97,35 @@
 
         p { 
             font-size: 1.5rem; font-weight: lighter; margin-top: 15px; opacity: 0.9; 
-            
-            /* FIX ANTI-PISCAR */
             -webkit-font-smoothing: antialiased;
             backface-visibility: hidden;
             transform: translateZ(0);
         }
 
-.hero-disclaimer {
+        .hero-disclaimer {
             position: absolute;
             bottom: 90px;
             left: 50%; 
-            
-    transform: translateX(-50%) translateZ(0); 
-            
-            z-index: 4;
+            transform: translateX(-50%) translateZ(0); 
+            z-index: 2001;
             font-size: 0.75rem; 
             color: rgba(255, 255, 255, 0.6); 
             opacity: 1; 
             text-align: center; width: 90%; max-width: 600px;
             pointer-events: none;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-
             -webkit-font-smoothing: antialiased;
             backface-visibility: hidden;
             will-change: opacity, transform;
         }
+        
         .disclaimer-link {
             color: white; 
             text-decoration: underline;
             cursor: pointer;
-            
             pointer-events: auto; 
             transition: 0.3s;
         }
-        
         .disclaimer-link:hover {
             color: #00eaff; 
             text-shadow: 0 0 10px rgba(0, 234, 255, 0.8);
@@ -186,12 +134,15 @@
 
         .scroll-indicator {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            z-index: 5; text-align: center; opacity: 0.7; animation: flutuar 2s infinite;
+            z-index: 2001; text-align: center; opacity: 0.7; animation: flutuar 2s infinite;
         }
         .scroll-indicator span { font-size: 0.8rem; letter-spacing: 2px; display: block; margin-bottom: 5px; }
         .scroll-indicator .arrow { font-size: 1.5rem; }
         @keyframes flutuar { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
 
+        /* ========================================= */
+        /* 3. GALERIA                               */
+        /* ========================================= */
         .galeria-section {
             width: 300%; height: 100vh; height: 100svh;
             display: flex; flex-wrap: nowrap; background-color: #050505;
@@ -210,7 +161,10 @@
 
         .info-projeto h3 { font-size: 2rem; margin-bottom: 5px; color: #fff; }
         .info-projeto span { color: #888; font-size: 1.2rem; }
-        
+
+        /* ========================================= */
+        /* 4. SERVIÇOS                              */
+        /* ========================================= */
         .servicos-section {
             background-color: #050505; padding: 100px 10%;
             display: flex; flex-direction: column; justify-content: center;
@@ -233,6 +187,9 @@
         .servico-nome { font-size: 3rem; flex-grow: 1; text-transform: uppercase; margin: 0; color: #fff; transition: 0.3s; }
         .servico-desc { font-size: 1.2rem; color: #ccc; margin: 0; text-align: right; }
 
+        /* ========================================= */
+        /* 5. MARQUEE                               */
+        /* ========================================= */
         .software-marquee {
             background: #111; padding: 25px 0; overflow: hidden; white-space: nowrap;
             position: relative; z-index: 10; border-top: 1px solid #333; border-bottom: 1px solid #333;
@@ -246,7 +203,10 @@
         .software-marquee:hover .icon-soft { filter: grayscale(0%); opacity: 1; transform: scale(1.2); }
         .software-marquee:hover span { color: #fff; }
         @keyframes letreiro { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        
+
+        /* ========================================= */
+        /* 6. SOBRE MIM                             */
+        /* ========================================= */
         .sobre-section {
             background-color: #050505; padding: 100px 10%; display: flex; align-items: center; justify-content: center;
             border-bottom: 1px solid #222; position: relative; z-index: 10;
@@ -268,17 +228,19 @@
         .sobre-detalhes span { background: #111; padding: 10px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: bold; border: 1px solid #333; }
 
         .sobre-texto h2, .sobre-texto h4, .sobre-texto p, .sobre-texto strong { transition: all 0.4s ease; }
-        
-        .sobre-texto:hover h2 { color: #ffffff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.4); }
+        .sobre-texto:hover h2 { color: #ffffff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
         .sobre-texto:hover h4 { color: #bbb; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
         .sobre-texto:hover p { color: #eee; }
-        .sobre-texto:hover strong { color: #00eaff; text-shadow: 0 0 10px rgba(0, 234, 255, 0.7), 0 0 20px rgba(0, 234, 255, 0.3); }
+        .sobre-texto:hover strong { color: #00eaff; text-shadow: 0 0 10px rgba(0, 234, 255, 0.7); }
         .sobre-texto:hover .sobre-detalhes span { background: #222; border-color: #555; color: white; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
 
+        /* ========================================= */
+        /* 7. COMPARADORES (FIXED)                  */
+        /* ========================================= */
         .comparison-section {
             height: 100vh; height: 100svh; width: 100%; background: #080808;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            position: relative; z-index: 1000; /* Fica acima da textura */
+            position: relative; z-index: 1000; 
         }
 
         .comparison-title { margin-bottom: 20px; text-align: center; z-index: 5; width: 90%; }
@@ -290,7 +252,6 @@
         }
 
         .video-compare { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        
         .video-front { z-index: 2; width: 100%; clip-path: inset(0 50% 0 0); }
 
         .slider-control {
@@ -316,16 +277,16 @@
         .label-grade { right: 20px; }
 
         .disclaimer-text {
-            margin-top: 20px; 
-            margin-bottom: 60px; 
+            margin-top: 20px; margin-bottom: 60px; 
             font-size: 0.9rem; color: #666; font-style: italic;
             text-align: center; max-width: 80%; line-height: 1.4; opacity: 0.8;
         }
         
+        /* ========================================= */
+        /* 8. CONTATO & FOOTER                      */
+        /* ========================================= */
         .contato-section {
-            height: auto; 
-            padding: 80px 20px; 
-            background-color: #050505;
+            height: auto; padding: 80px 20px; background-color: #050505;
             display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;
             border-top: 1px solid #222; position: relative; z-index: 10;
         }
@@ -375,24 +336,13 @@
             .disclaimer-text { font-size: 0.75rem; margin-top: 15px; }
             .divisor-button { width: 50px; height: 50px; font-size: 1.2rem; }
             
-            .contato-section { 
-                padding: 60px 20px 120px 20px; 
-            }
+            .contato-section { padding: 60px 20px 120px 20px; }
         }
     </style>
 </head>
 <body>
 
     <div class="hero-section">
-        <div class="texto-overlay">
-            <h1>RAFAEL SOARES</h1>
-            <p>EDITOR & COLORISTA</p>
-        </div>
-        
-        <video class="minha-imagem" autoplay loop muted playsinline poster="assets/capa-poster.jpg">
-            <source src="videos/showreel-capa.mp4" type="video/mp4">
-        </video>
-      <div class="hero-section">
         
         <video class="minha-imagem" autoplay loop muted playsinline poster="assets/capa-poster.jpg">
             <source src="showreel-capa.mp4" type="video/mp4">
@@ -504,7 +454,7 @@
         </div>
     </div>
 
-<div class="comparison-section">
+    <div class="comparison-section">
         <div class="comparison-title">
             <h2>COLOR GRADING 01</h2>
             <p>Corrida na parte da tarde</p>
@@ -521,10 +471,8 @@
             
             <div class="label-video label-raw">RAW</div>
             <div class="label-video label-grade">GRADED</div>
-            
             <div class="divisor-line"></div>
             <div class="divisor-button">↔</div>
-
             <input type="range" min="0" max="100" value="50" class="slider-control">
         </div>
     </div>
@@ -546,10 +494,8 @@
             
             <div class="label-video label-raw">RAW</div>
             <div class="label-video label-grade">GRADED</div>
-            
             <div class="divisor-line"></div>
             <div class="divisor-button">↔</div>
-
             <input type="range" min="0" max="100" value="50" class="slider-control">
         </div>
         
@@ -587,16 +533,19 @@
 
         let isMobile = window.innerWidth < 768;
 
+        // HERO ANIMATION (Crescimento do Vídeo)
         let tlHero = gsap.timeline({
             scrollTrigger: {
                 trigger: ".hero-section", start: "top top", end: isMobile ? "+=800" : "+=1500", scrub: 1, pin: true
             }
         });
+        // Scale 3 é suficiente para cobrir a tela sem pesar
         tlHero.to(".minha-imagem", { scale: 3, ease: "none" }, 0); 
         tlHero.to(".texto-overlay", { opacity: 0, scale: 1.5 }, 0); 
         tlHero.to(".scroll-indicator", { opacity: 0 }, 0); 
         tlHero.to(".hero-disclaimer", { opacity: 0 }, 0); 
 
+        // GALERIA HORIZONTAL
         let secoes = gsap.utils.toArray(".projeto-card");
         gsap.to(secoes, {
             xPercent: -100 * (secoes.length - 1),
@@ -607,59 +556,47 @@
                 snap: { snapTo: 1 / (secoes.length - 1), duration: 0.5, delay: 0.1, ease: "power1.out" }
             }
         });
-// --- LÓGICA DE MÚLTIPLOS SLIDERS (CORRIGIDO PARA 2 OU MAIS VÍDEOS) ---
-        
-        // 1. Encontra TODAS as caixas de vídeo na página
+
+        // SLIDERS DE COMPARAÇÃO (Automático para todos)
         const containers = document.querySelectorAll('.video-container');
 
-        // 2. Cria uma automação para cada caixa encontrada
         containers.forEach(container => {
-            // Busca os elementos APENAS dentro desta caixa específica
             const sliderInput = container.querySelector('.slider-control');
             const linha = container.querySelector('.divisor-line');
             const botao = container.querySelector('.divisor-button');
-            const videoFront = container.querySelector('.video-front'); // Vídeo da Frente (Raw)
-            const videoBack = container.querySelector('.video-back');   // Vídeo de Trás (Graded)
+            const videoFront = container.querySelector('.video-front');
+            const videoBack = container.querySelector('.video-back');
             
-            // Variáveis exclusivas para este slider
             let targetPos = 50;
             let currentPos = 50;
 
-            // A. Ouve o movimento do slider (Input)
             if (sliderInput) {
                 sliderInput.addEventListener('input', (e) => {
                     targetPos = parseFloat(e.target.value);
                 });
             }
 
-            // B. Loop de Animação Suave (Smooth)
             function renderLoop() {
-                // Efeito de inércia (o valor atual persegue o alvo)
                 currentPos += (targetPos - currentPos) * 0.08; 
                 
-                // Aplica o visual
                 if (linha && botao && videoFront) {
                     linha.style.left = currentPos + "%";
                     botao.style.left = currentPos + "%";
-                    // O corte mágico (Clip Path)
                     videoFront.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
                 }
 
-                // Mantém o loop rodando se houver movimento
                 if (Math.abs(targetPos - currentPos) > 0.1) {
                     requestAnimationFrame(renderLoop);
                 } else {
                     requestAnimationFrame(renderLoop); 
                 }
             }
-            renderLoop(); // Inicia o motor
+            renderLoop();
 
-            // C. Sincronia dos Vídeos (Play/Pause juntos)
             if(videoFront && videoBack) { 
                 videoFront.onplay = () => videoBack.play();
                 videoFront.onpause = () => videoBack.pause();
                 
-                // Garante que se um pular o tempo, o outro acompanha
                 videoFront.addEventListener('timeupdate', () => {
                     if (!videoFront.seeking && Math.abs(videoFront.currentTime - videoBack.currentTime) > 0.1) {
                         videoBack.currentTime = videoFront.currentTime;
@@ -681,8 +618,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
