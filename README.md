@@ -1,2 +1,2 @@
 # portfolio
-My portfolio created in Github.
+Meu portfólio criado com JavaScript, HTML e CSS.
