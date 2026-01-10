@@ -72,15 +72,15 @@
             will-change: transform;
         }
 
-        .texto-overlay { 
+.texto-overlay { 
             position: absolute; 
-            
-            /* AQUI ESTÁ A CORREÇÃO DO NOME SUMINDO */
-            z-index: 1001; /* Maior que o vídeo (1000) */
-            
+            z-index: 99999; /* Valor absurdo para garantir */
             text-align: center; 
             pointer-events: none; 
             width: 90%; 
+            
+            /* Isso ajuda o navegador a entender que é uma camada separada */
+            transform: translateZ(100px); 
         }
 
         /* O disclaimer e a setinha ficam no topo de tudo */
@@ -671,6 +671,7 @@
     </script>
 </body>
 </html>
+
 
 
 
