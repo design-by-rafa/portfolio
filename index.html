@@ -528,51 +528,57 @@
                 snap: { snapTo: 1 / (secoes.length - 1), duration: 0.5, delay: 0.1, ease: "power1.out" }
             }
         });
-// --- 5. LÓGICA SLIDER COMPARAÇÃO (COM INÉRCIA/SMOOTH) ---
+// --- 5. LÓGICA DE MÚLTIPLOS SLIDERS (SMOOTH) ---
         
-        let targetPos = 50;  // Onde o mouse/dedo está
-        let currentPos = 50; // Onde a linha realmente está (persegue o alvo)
-        
-        // Pega os elementos uma vez só para não pesar
-        const sliderInput = document.querySelector('.slider-control');
-        const linha = document.querySelector('.divisor-line');
-        const botao = document.querySelector('.divisor-button');
-        const videoFront = document.querySelector('.video-front'); // RAW
+        // Procura todos os containers de vídeo na página
+        const containers = document.querySelectorAll('.video-container');
 
-        // 1. Ouve o movimento do usuário (Instantâneo)
-        sliderInput.addEventListener('input', (e) => {
-            targetPos = parseFloat(e.target.value);
-        });
+        containers.forEach(container => {
+            const sliderInput = container.querySelector('.slider-control');
+            const linha = container.querySelector('.divisor-line');
+            const botao = container.querySelector('.divisor-button');
+            const videoFront = container.querySelector('.video-front');
+            const videoBack = container.querySelector('.video-back');
+            
+            let targetPos = 50;
+            let currentPos = 50;
 
-        // 2. Loop de Animação (Roda 60x por segundo para suavizar)
-        function renderLoop() {
-            // A mágica: Current se aproxima de Target por uma fração (0.1 = 10%)
-            // Mude 0.05 para mais lento (mais pesado) ou 0.2 para mais rápido
-            currentPos += (targetPos - currentPos) * 0.08; 
-
-            // Aplica as posições visuais
-            linha.style.left = currentPos + "%";
-            botao.style.left = currentPos + "%";
-            videoFront.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
-
-            requestAnimationFrame(renderLoop);
-        }
-
-        // Inicia o loop eterno
-        renderLoop();
-
-        const v1 = document.querySelector('.video-front');
-        const v2 = document.querySelector('.video-back');
-        if(v1 && v2) { 
-            v1.onplay = () => v2.play();
-            v1.onpause = () => v2.pause();
-            v1.addEventListener('timeupdate', () => {
-                if (!v1.seeking && Math.abs(v1.currentTime - v2.currentTime) > 0.1) {
-                    v2.currentTime = v1.currentTime;
-                }
+            // 1. Ouve o input DESTE slider específico
+            sliderInput.addEventListener('input', (e) => {
+                targetPos = parseFloat(e.target.value);
             });
-        }
 
+            // 2. Animação Smooth para ESTE slider
+            function renderLoop() {
+                currentPos += (targetPos - currentPos) * 0.08; 
+                
+                // Aplica só nos elementos deste container
+                linha.style.left = currentPos + "%";
+                botao.style.left = currentPos + "%";
+                videoFront.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
+
+                // Continua o loop se a diferença for visível (economiza bateria)
+                if (Math.abs(targetPos - currentPos) > 0.1) {
+                    requestAnimationFrame(renderLoop);
+                } else {
+                    // Pausa o loop se parou de mexer, retoma no próximo input
+                    requestAnimationFrame(renderLoop); 
+                }
+            }
+            renderLoop(); // Inicia
+
+            // 3. Sincronia de Loop (Raw e Graded juntos)
+            if(videoFront && videoBack) { 
+                videoFront.onplay = () => videoBack.play();
+                videoFront.onpause = () => videoBack.pause();
+                videoFront.addEventListener('timeupdate', () => {
+                    if (!videoFront.seeking && Math.abs(videoFront.currentTime - videoBack.currentTime) > 0.1) {
+                        videoBack.currentTime = videoFront.currentTime;
+                    }
+                });
+            }
+        });
+        
         window.addEventListener("load", () => {
             ScrollTrigger.refresh();
         });
@@ -586,6 +592,7 @@
     </script>
 </body>
 </html>
+
 
 
 
