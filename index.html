@@ -60,23 +60,48 @@
 
         .texto-overlay { position: absolute; z-index: 2; text-align: center; pointer-events: none; width: 90%; }
 
-        h1 { 
-            font-size: 5rem; margin: 0; text-transform: uppercase; letter-spacing: 5px; 
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5); line-height: 1.1;
+       h1 { 
+            font-size: 5rem; margin: 0; 
+            text-transform: uppercase; letter-spacing: 5px; 
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            line-height: 1.1;
+            
+            -webkit-font-smoothing: antialiased;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            will-change: opacity, transform;
         }
-        p { font-size: 1.5rem; font-weight: lighter; margin-top: 15px; opacity: 0.9; }
 
-        .hero-disclaimer {
+        p { 
+            font-size: 1.5rem; font-weight: lighter; margin-top: 15px; opacity: 0.9; 
+            
+            /* FIX ANTI-PISCAR */
+            -webkit-font-smoothing: antialiased;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+     .hero-disclaimer {
             position: absolute;
             bottom: 90px;
             left: 50%; transform: translateX(-50%);
             z-index: 4;
             font-size: 0.75rem; color: white;
-            opacity: 0.5; 
-            text-align: center; width: 90%; max-width: 600px;
             
-            pointer-events: none; 
+            /* MUDANÇA: Em vez de opacity 0.5, usei cor com transparência. 
+               Isso evita que o navegador fique recalculando a opacidade toda hora. */
+            color: rgba(255, 255, 255, 0.6); 
+            opacity: 1; /* Deixe em 1 aqui */
+            
+            text-align: center; width: 90%; max-width: 600px;
+            pointer-events: none;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+
+            /* FIX ANTI-PISCAR */
+            -webkit-font-smoothing: antialiased;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            will-change: opacity;
         }
 
         .disclaimer-link {
@@ -425,7 +450,7 @@
             <div class="divisor-line"></div>
             <div class="divisor-button">↔</div>
 
-            <input type="range" min="0" max="100" value="50" class="slider-control" oninput="atualizarComparacao(this.value)">
+<input type="range" min="0" max="100" value="50" class="slider-control">
         </div>
 
         <p class="disclaimer-text">
@@ -482,16 +507,38 @@
                 snap: { snapTo: 1 / (secoes.length - 1), duration: 0.5, delay: 0.1, ease: "power1.out" }
             }
         });
+// --- 5. LÓGICA SLIDER COMPARAÇÃO (COM INÉRCIA/SMOOTH) ---
+        
+        let targetPos = 50;  // Onde o mouse/dedo está
+        let currentPos = 50; // Onde a linha realmente está (persegue o alvo)
+        
+        // Pega os elementos uma vez só para não pesar
+        const sliderInput = document.querySelector('.slider-control');
+        const linha = document.querySelector('.divisor-line');
+        const botao = document.querySelector('.divisor-button');
+        const videoFront = document.querySelector('.video-front'); // RAW
 
-        function atualizarComparacao(valor) {
-            const linha = document.querySelector('.divisor-line');
-            const botao = document.querySelector('.divisor-button');
-            const videoFront = document.querySelector('.video-front'); // Vídeo Raw (Frente)
-            
-            linha.style.left = valor + "%";
-            botao.style.left = valor + "%";
-            videoFront.style.clipPath = `inset(0 ${100 - valor}% 0 0)`;
+        // 1. Ouve o movimento do usuário (Instantâneo)
+        sliderInput.addEventListener('input', (e) => {
+            targetPos = parseFloat(e.target.value);
+        });
+
+        // 2. Loop de Animação (Roda 60x por segundo para suavizar)
+        function renderLoop() {
+            // A mágica: Current se aproxima de Target por uma fração (0.1 = 10%)
+            // Mude 0.05 para mais lento (mais pesado) ou 0.2 para mais rápido
+            currentPos += (targetPos - currentPos) * 0.08; 
+
+            // Aplica as posições visuais
+            linha.style.left = currentPos + "%";
+            botao.style.left = currentPos + "%";
+            videoFront.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
+
+            requestAnimationFrame(renderLoop);
         }
+
+        // Inicia o loop eterno
+        renderLoop();
 
         const v1 = document.querySelector('.video-front');
         const v2 = document.querySelector('.video-back');
@@ -518,4 +565,5 @@
     </script>
 </body>
 </html>
+
 
