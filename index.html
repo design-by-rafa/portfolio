@@ -167,7 +167,7 @@
         @keyframes letreiro { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* ========================================= */
-        /* 6. SOBRE MIM (ATUALIZADO PARA 3D)        */
+        /* 6. SOBRE MIM (AGORA 2D COM GLOW)         */
         /* ========================================= */
         .sobre-section {
             background-color: #050505; padding: 100px 10%; display: flex; align-items: center; justify-content: center;
@@ -175,18 +175,23 @@
         }
         .sobre-content { display: flex; align-items: center; justify-content: center; gap: 80px; max-width: 1200px; }
         
-        /* Container com Perspectiva 3D */
         .sobre-foto {
-            perspective: 1500px; /* Profundidade */
             display: flex; justify-content: center;
         }
         
-        /* A Foto (Sem filtro P&B, Sem animação CSS) */
         .sobre-foto img {
             width: 400px; height: 500px; object-fit: cover; border-radius: 10px;
-            box-shadow: 20px 20px 0px #111; /* Sombra dura inicial */
-            cursor: pointer;
-            /* O JS vai controlar o 3D */
+            
+            /* GLOW BRANCO: Sombra espalhada e branca com transparência */
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.15);
+            
+            transition: 0.5s; /* Suavidade no hover */
+        }
+        
+        /* Aumenta o brilho ao passar o mouse */
+        .sobre-foto img:hover {
+            box-shadow: 0 0 100px rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
         }
 
         .sobre-texto { max-width: 500px; }
@@ -291,7 +296,7 @@
 
     <div class="hero-section">
         <video class="minha-imagem" autoplay loop muted playsinline poster="assets/capa-poster.jpg">
-            <source src="showreel-capa.mp4" type="video/mp4">
+            <source src="videos/showreel-capa.mp4" type="video/mp4">
         </video>
         <div class="texto-overlay">
             <h1>RAFAEL SOARES</h1>
@@ -532,48 +537,6 @@
             }
         });
 
-        // --- ANIMAÇÃO MOEDA 3D (INFINITO + SNAP) ---
-        const coinImage = document.querySelector('.sobre-foto img');
-        let spinAnimation; 
-        
-        function startSpin() {
-            if (spinAnimation) spinAnimation.kill();
-            let currentRot = gsap.getProperty(coinImage, "rotationY") || 0;
-            spinAnimation = gsap.to(coinImage, {
-                rotationY: currentRot + 360, 
-                duration: 20, 
-                repeat: -1,   
-                ease: "none"  
-            });
-        }
-        
-        if (coinImage) {
-            startSpin(); // Começa girando
-
-            // Mouse Entrou: Para e Alinha
-            coinImage.addEventListener('mouseenter', () => {
-                if (spinAnimation) spinAnimation.kill();
-                let currentRot = gsap.getProperty(coinImage, "rotationY");
-                let snapRotation = Math.round(currentRot / 360) * 360; // Calcula o múltiplo de 360 mais próximo
-                
-                gsap.to(coinImage, {
-                    rotationY: snapRotation,
-                    duration: 0.8, 
-                    ease: "power2.out", 
-                    boxShadow: "0 0 40px rgba(0, 234, 255, 0.5)" // Glow Azul
-                });
-            });
-
-            // Mouse Saiu: Volta a girar
-            coinImage.addEventListener('mouseleave', () => {
-                gsap.to(coinImage, {
-                    boxShadow: "20px 20px 0px #111", // Volta sombra escura
-                    duration: 0.5
-                });
-                startSpin();
-            });
-        }
-
         window.addEventListener("load", () => {
             ScrollTrigger.refresh();
         });
@@ -586,3 +549,4 @@
     </script>
 </body>
 </html>
+
