@@ -9,8 +9,7 @@
     <meta name="theme-color" content="#050505">
     
     <link rel="icon" type="image/png" href="favicon.png">
-    <meta property="og:image" content="https://seusite.github.io/thumb-compartilhamento.jpg">
-
+    
     <style>
         /* ========================================= */
         /* 1. CONFIGURAÇÕES GERAIS                  */
@@ -27,13 +26,10 @@
             -webkit-overflow-scrolling: touch; 
         }
 
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; /* Altura para scroll horizontal */ }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #555; }
-
-        ::selection { background: #ffffff; color: #000000; text-shadow: none; }
-        ::-moz-selection { background: #ffffff; color: #000000; text-shadow: none; }
 
         /* TEXTURA DE TV */
         body::before {
@@ -76,22 +72,17 @@
             text-transform: uppercase; letter-spacing: 5px; 
             text-shadow: 0 10px 30px rgba(0,0,0,0.5); 
             line-height: 1.1;
-            -webkit-font-smoothing: antialiased; backface-visibility: hidden; transform: translateZ(0); will-change: opacity, transform;
         }
 
-        p { 
-            font-size: 1.5rem; font-weight: lighter; margin-top: 15px; opacity: 0.9; 
-            -webkit-font-smoothing: antialiased; backface-visibility: hidden; transform: translateZ(0);
-        }
+        p { font-size: 1.5rem; font-weight: lighter; margin-top: 15px; opacity: 0.9; }
 
         .hero-disclaimer {
             position: absolute; bottom: 90px; left: 50%; 
-            transform: translateX(-50%) translateZ(0); 
+            transform: translateX(-50%); 
             z-index: 2001;
             font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); opacity: 1; 
             text-align: center; width: 90%; max-width: 600px;
             pointer-events: none; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            -webkit-font-smoothing: antialiased; backface-visibility: hidden;
         }
         
         .disclaimer-link {
@@ -110,23 +101,118 @@
         @keyframes flutuar { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
 
         /* ========================================= */
-        /* 3. GALERIA                               */
+        /* 3. GALERIA (Native Horizontal Scroll)    */
         /* ========================================= */
         .galeria-section {
-            width: 300%; height: 100vh; height: 100svh;
-            display: flex; flex-wrap: nowrap; background-color: #050505;
+            width: 100%; 
+            height: 100vh; height: 100svh;
+            display: flex; 
+            flex-wrap: nowrap; 
+            background-color: #050505;
+            
+            /* Habilita o scroll horizontal nativo */
+            overflow-x: auto; 
+            overflow-y: hidden;
+            
+            /* Efeito de Ímã (Snap) */
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
         }
+
         .projeto-card {
-            width: 100vw; height: 100vh; height: 100svh;
+            /* Garante que cada card ocupe a tela inteira */
+            min-width: 100vw; 
+            height: 100vh; height: 100svh;
+            
             display: flex; align-items: center; justify-content: center;
-            flex-direction: column; border-right: 1px solid #111;
+            flex-direction: column; 
+            border-right: 1px solid #111;
+            
+            /* O ponto onde o ímã para */
+            scroll-snap-align: center;
+            
+            position: relative; cursor: pointer; 
+            transition: background 0.3s ease;
         }
+        
+        .projeto-card:hover { background: #0a0a0a; }
+        .projeto-card:hover .img-projeto {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+        }
+
         .img-projeto {
             width: 60%; height: 60vh; object-fit: cover; border-radius: 10px;
             background: #111; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            pointer-events: none; 
+            transition: transform 0.4s ease;
         }
+
         .info-projeto h3 { font-size: 2rem; margin-bottom: 5px; color: #fff; }
         .info-projeto span { color: #888; font-size: 1.2rem; }
+        
+        .ver-mais-btn {
+            margin-top: 15px; font-size: 0.8rem; text-transform: uppercase; 
+            letter-spacing: 2px; color: #00eaff; opacity: 0.7;
+        }
+        
+        /* Dica visual para scroll horizontal */
+        .scroll-hint-horizontal {
+            position: absolute; bottom: 20px; right: 20px;
+            color: rgba(255,255,255,0.3); font-size: 0.8rem;
+            animation: piscar 2s infinite; pointer-events: none;
+        }
+        @keyframes piscar { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+        /* ========================================= */
+        /* 3.1 MODAIS SKEUMORPHISM                  */
+        /* ========================================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 5000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: 0.4s ease;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .skeuo-modal {
+            width: 85%; max-width: 900px; max-height: 85vh;
+            background: rgba(25, 25, 25, 0.7);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-radius: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
+            padding: 40px; position: relative;
+            transform: scale(0.9) translateY(30px);
+            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            overflow-y: auto; display: none;
+        }
+
+        .modal-overlay.active .skeuo-modal.active-content {
+            display: block; transform: scale(1) translateY(0);
+        }
+
+        .close-btn {
+            position: absolute; top: 20px; right: 20px;
+            width: 40px; height: 40px; border-radius: 50%;
+            border: none; background: rgba(255,255,255,0.1); color: white;
+            font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1), inset -2px -2px 5px rgba(0,0,0,0.5);
+        }
+        .close-btn:hover { background: #ff4757; transform: rotate(90deg); }
+
+        .modal-content h2 { font-size: 2.5rem; margin-bottom: 20px; color: #fff; text-shadow: 0 5px 10px rgba(0,0,0,0.5); }
+        .modal-content p { font-size: 1.1rem; line-height: 1.6; color: #ccc; margin-bottom: 20px; }
+        .modal-video { width: 100%; border-radius: 10px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .tag { 
+            display: inline-block; padding: 5px 15px; border-radius: 50px; 
+            background: rgba(0, 234, 255, 0.1); color: #00eaff; border: 1px solid rgba(0, 234, 255, 0.3);
+            font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; margin-right: 10px;
+        }
 
         /* ========================================= */
         /* 4. SERVIÇOS                              */
@@ -167,7 +253,7 @@
         @keyframes letreiro { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* ========================================= */
-        /* 6. SOBRE MIM (AGORA 2D COM GLOW)         */
+        /* 6. SOBRE MIM                             */
         /* ========================================= */
         .sobre-section {
             background-color: #050505; padding: 100px 10%; display: flex; align-items: center; justify-content: center;
@@ -175,39 +261,19 @@
         }
         .sobre-content { display: flex; align-items: center; justify-content: center; gap: 80px; max-width: 1200px; }
         
-        .sobre-foto {
-            display: flex; justify-content: center;
-        }
-        
         .sobre-foto img {
             width: 400px; height: 500px; object-fit: cover; border-radius: 10px;
-            
-            /* GLOW BRANCO: Sombra espalhada e branca com transparência */
-            box-shadow: 0 0 60px rgba(255, 255, 255, 0.15);
-            
-            transition: 0.5s; /* Suavidade no hover */
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.15); transition: 0.5s; 
         }
-        
-        /* Aumenta o brilho ao passar o mouse */
-        .sobre-foto img:hover {
-            box-shadow: 0 0 100px rgba(255, 255, 255, 0.3);
-            transform: scale(1.02);
-        }
+        .sobre-foto img:hover { box-shadow: 0 0 100px rgba(255, 255, 255, 0.3); transform: scale(1.02); }
 
-        .sobre-texto { max-width: 500px; }
+        .sobre-texto { max-width: 500px; text-align: center; }
         .sobre-texto h2 { font-size: 3rem; margin-bottom: 10px; line-height: 1; }
         .sobre-texto h4 { font-size: 1.2rem; color: #666; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
         .sobre-texto p { font-size: 1.1rem; color: #ccc; margin-bottom: 20px; line-height: 1.6; }
         
-        .sobre-detalhes { margin-top: 30px; display: flex; gap: 20px; }
+        .sobre-detalhes { margin-top: 30px; display: flex; gap: 20px; justify-content: center; }
         .sobre-detalhes span { background: #111; padding: 10px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: bold; border: 1px solid #333; }
-
-        .sobre-texto h2, .sobre-texto h4, .sobre-texto p, .sobre-texto strong { transition: all 0.4s ease; }
-        .sobre-texto:hover h2 { color: #ffffff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
-        .sobre-texto:hover h4 { color: #bbb; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
-        .sobre-texto:hover p { color: #eee; }
-        .sobre-texto:hover strong { color: #00eaff; text-shadow: 0 0 10px rgba(0, 234, 255, 0.7); }
-        .sobre-texto:hover .sobre-detalhes span { background: #222; border-color: #555; color: white; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
 
         /* ========================================= */
         /* 7. COMPARADORES                          */
@@ -289,6 +355,9 @@
             .video-container { width: 90%; height: 45vh; }
             .comparison-title h2 { font-size: 1.8rem; }
             .contato-section { padding: 60px 20px 120px 20px; }
+            /* Ajuste Modal Mobile */
+            .skeuo-modal { width: 95%; height: 85vh; padding: 25px; }
+            .modal-content h2 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -312,7 +381,8 @@
     </div>
 
     <div class="galeria-section">
-        <div class="projeto-card">
+        
+        <div class="projeto-card" onclick="abrirModal(1)">
             <video class="img-projeto" autoplay loop muted playsinline poster="assets/video1-poster.jpg">
                 <source src="video1.mp4" type="video/mp4">
             </video>
@@ -320,8 +390,11 @@
                 <h3>Comercial X</h3>
                 <span>Edição Dinâmica</span>
             </div>
+            <div class="ver-mais-btn">Ver Detalhes +</div>
+            <div class="scroll-hint-horizontal">→</div>
         </div>
-        <div class="projeto-card">
+
+        <div class="projeto-card" onclick="abrirModal(2)">
             <video class="img-projeto" autoplay loop muted playsinline poster="assets/video2-poster.jpg">
                 <source src="video2.mp4" type="video/mp4">
             </video>
@@ -329,14 +402,65 @@
                 <h3>Clipe Musical Y</h3>
                 <span>VFX & Flow</span>
             </div>
+            <div class="ver-mais-btn">Ver Detalhes +</div>
         </div>
-        <div class="projeto-card">
+
+        <div class="projeto-card" onclick="abrirModal(3)">
             <img src="projeto3.jpg" class="img-projeto" style="object-fit: contain;">
             <div class="info-projeto">
                 <h3>Identidade Visual</h3>
                 <span>Design & Branding</span>
             </div>
+            <div class="ver-mais-btn">Ver Detalhes +</div>
         </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="fecharModal()">
+        
+        <div class="skeuo-modal" id="modal-1" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="fecharModal()">×</button>
+            <div class="modal-content">
+                <span class="tag">PUBLICIDADE</span> <span class="tag">ADOBE PREMIERE</span>
+                <h2>COMERCIAL X - DETALHES</h2>
+                
+                <video class="modal-video" controls>
+                    <source src="video1.mp4" type="video/mp4">
+                </video>
+                
+                <p><strong>O Desafio:</strong> Criar um corte dinâmico de 30 segundos que transmitisse velocidade e energia para a nova campanha de verão.</p>
+                <p><strong>Minha Abordagem:</strong> Foquei na sincronia musical e no design de som (SFX) para dar peso aos movimentos. A colorimetria foi ajustada para tons quentes vibrantes.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+
+        <div class="skeuo-modal" id="modal-2" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="fecharModal()">×</button>
+            <div class="modal-content">
+                <span class="tag">VIDEOCLIPE</span> <span class="tag">AFTER EFFECTS</span>
+                <h2>CLIPE MUSICAL Y - VFX</h2>
+                
+                <video class="modal-video" controls>
+                    <source src="video2.mp4" type="video/mp4">
+                </video>
+                
+                <p><strong>O Desafio:</strong> Integrar elementos gráficos surrealistas em cenas urbanas noturnas.</p>
+                <p><strong>Minha Abordagem:</strong> Utilizei técnicas de Rotoscopia e Tracking 3D no After Effects para inserir os hologramas. O look final buscou uma estética Cyberpunk.</p>
+            </div>
+        </div>
+
+        <div class="skeuo-modal" id="modal-3" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="fecharModal()">×</button>
+            <div class="modal-content">
+                <span class="tag">BRANDING</span> <span class="tag">ILLUSTRATOR</span>
+                <h2>IDENTIDADE VISUAL</h2>
+                
+                <img src="projeto3.jpg" style="width:100%; border-radius:10px; margin-bottom:20px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);">
+                
+                <p><strong>O Desafio:</strong> Modernizar a marca mantendo a tradição da empresa.</p>
+                <p><strong>Minha Abordagem:</strong> Simplifiquei os traços do logotipo original para facilitar a aplicação em meios digitais, mantendo a paleta de cores institucional com um toque mais saturado.</p>
+            </div>
+        </div>
+
     </div>
 
     <div class="servicos-section">
@@ -482,18 +606,6 @@
         tlHero.to(".scroll-indicator", { opacity: 0 }, 0); 
         tlHero.to(".hero-disclaimer", { opacity: 0 }, 0); 
 
-        // GALERIA
-        let secoes = gsap.utils.toArray(".projeto-card");
-        gsap.to(secoes, {
-            xPercent: -100 * (secoes.length - 1),
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".galeria-section", pin: true, scrub: 2, 
-                start: "top top", end: isMobile ? "+=1500" : "+=3000", 
-                snap: { snapTo: 1 / (secoes.length - 1), duration: 0.5, delay: 0.1, ease: "power1.out" }
-            }
-        });
-
         // SLIDERS
         const containers = document.querySelectorAll('.video-container');
         containers.forEach(container => {
@@ -537,6 +649,32 @@
             }
         });
 
+        // --- LÓGICA DOS MODAIS (SUBPÁGINAS) ---
+        function abrirModal(id) {
+            // Mostra o fundo escuro
+            document.getElementById('modalOverlay').classList.add('active');
+            
+            // Esconde todos os modais antes de mostrar o certo
+            document.querySelectorAll('.skeuo-modal').forEach(m => m.classList.remove('active-content'));
+            
+            // Mostra o modal específico e inicia o vídeo se houver
+            const modal = document.getElementById('modal-' + id);
+            if(modal) {
+                modal.classList.add('active-content');
+                const video = modal.querySelector('video');
+                if(video) video.play();
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.querySelectorAll('.skeuo-modal').forEach(m => {
+                m.classList.remove('active-content');
+                const video = m.querySelector('video');
+                if(video) video.pause(); // Pausa o vídeo ao fechar
+            });
+        }
+
         window.addEventListener("load", () => {
             ScrollTrigger.refresh();
         });
@@ -549,4 +687,3 @@
     </script>
 </body>
 </html>
-
