@@ -393,7 +393,7 @@
     </div>
 
     <div class="hero-section">
-        <video class="minha-imagem" autoplay loop muted playsinline>
+        <video class="minha-imagem" autoplay loop muted playsinline preload="auto">
             <source src="videos/showreel-capa.mp4" type="video/mp4">
         </video>
         <div class="texto-overlay">
@@ -417,7 +417,7 @@
         <div class="galeria-section" id="galeria">
             
             <div class="projeto-card" onclick="abrirModal(1)">
-                <video class="img-projeto" autoplay loop muted playsinline>
+                <video class="img-projeto" autoplay loop muted playsinline preload="auto">
                     <source src="video1.mp4" type="video/mp4">
                 </video>
                 <div class="info-projeto">
@@ -428,7 +428,7 @@
             </div>
 
             <div class="projeto-card" onclick="abrirModal(2)">
-                <video class="img-projeto" autoplay loop muted playsinline>
+                <video class="img-projeto" autoplay loop muted playsinline preload="auto">
                     <source src="video2.mp4" type="video/mp4">
                 </video>
                 <div class="info-projeto">
@@ -457,7 +457,7 @@
                 <span class="tag">PUBLICIDADE</span> <span class="tag">ADOBE PREMIERE</span>
                 <h2>COMERCIAL X - DETALHES</h2>
                 
-                <video class="modal-video" controls>
+                <video class="modal-video" controls preload="auto">
                     <source src="video1.mp4" type="video/mp4">
                 </video>
                 
@@ -472,7 +472,7 @@
                 <span class="tag">VIDEOCLIPE</span> <span class="tag">AFTER EFFECTS</span>
                 <h2>CLIPE MUSICAL Y - VFX</h2>
                 
-                <video class="modal-video" controls>
+                <video class="modal-video" controls preload="auto">
                     <source src="video2.mp4" type="video/mp4">
                 </video>
                 
@@ -562,10 +562,10 @@
             <p>Corrida na parte da tarde</p>
         </div>
         <div class="video-container">
-            <video class="video-compare video-back" autoplay loop muted playsinline>
+            <video class="video-compare video-back" autoplay loop muted playsinline preload="auto">
                 <source src="videos/grade1.mp4" type="video/mp4">
             </video>
-            <video class="video-compare video-front" autoplay loop muted playsinline>
+            <video class="video-compare video-front" autoplay loop muted playsinline preload="auto">
                 <source src="videos/raw1.mp4" type="video/mp4">
             </video>
             <div class="label-video label-raw">RAW</div>
@@ -582,10 +582,10 @@
             <p>Videoclipe Urbano</p>
         </div>
         <div class="video-container">
-            <video class="video-compare video-back" autoplay loop muted playsinline>
+            <video class="video-compare video-back" autoplay loop muted playsinline preload="auto">
                 <source src="videos/grade2.mp4" type="video/mp4">
             </video>
-            <video class="video-compare video-front" autoplay loop muted playsinline>
+            <video class="video-compare video-front" autoplay loop muted playsinline preload="auto">
                 <source src="videos/raw2.mp4" type="video/mp4">
             </video>
             <div class="label-video label-raw">RAW</div>
@@ -681,21 +681,20 @@
             }
             renderLoop();
 
-            // SINCRONIA FORTE
+            // SINCRONIA LEVE (EVENT-BASED) - SEM TRAVAMENTO
             if(videoFront && videoBack) { 
-                const syncVideos = () => {
-                    if(Math.abs(videoFront.currentTime - videoBack.currentTime) > 0.1) {
-                        videoBack.currentTime = videoFront.currentTime;
-                    }
-                };
-
+                // 1. Play/Pause juntos
                 videoFront.addEventListener('play', () => videoBack.play());
                 videoFront.addEventListener('pause', () => videoBack.pause());
-                videoFront.addEventListener('seeking', () => { videoBack.currentTime = videoFront.currentTime; });
-                videoFront.addEventListener('seeked', () => { videoBack.currentTime = videoFront.currentTime; });
+                
+                // 2. Se arrastar a barra (seeking), sincroniza
+                videoFront.addEventListener('seeking', () => { 
+                    videoBack.currentTime = videoFront.currentTime; 
+                });
+
+                // 3. Se um carregar (waiting), o outro espera
                 videoFront.addEventListener('waiting', () => videoBack.pause());
                 videoFront.addEventListener('playing', () => videoBack.play());
-                videoFront.addEventListener('timeupdate', syncVideos);
             }
         });
 
@@ -735,3 +734,4 @@
     </script>
 </body>
 </html>
+
